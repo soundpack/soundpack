@@ -1,0 +1,12 @@
+global: 
+  # Environment Variables
+  DOMAIN_NAME: soundpack.io
+  API_URL: https://api.soundpack.io
+  GCP_BUCKET_NAME: soundpack-uploads-production
+  # TLS Config
+  tls: 
+    email: sam@soundpack.io
+    domains: 
+      web: api.soundpack.io
+      api: api.soundpack.io
+    

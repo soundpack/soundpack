@@ -1,0 +1,5 @@
+export const MONGO_DB_HOST = process.env.MONGO_DB_HOST || 'localhost';
+export const MONGO_DB_PORT = process.env.MONGO_DB_PORT || '27017';
+export const JWT_SECRET = process.env.JWT_SECRET || 'THIS_IS_NOT_SECURE!#$%';
+export const APP_BASE_URL = process.env.APP_BASE_URL || 'http://localhost:3000';
+export const GCP_BUCKET_NAME = process.env.GCP_BUCKET_NAME;

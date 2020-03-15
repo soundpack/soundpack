@@ -1,0 +1,9 @@
+name: ingress
+home: https://github.com/sellout/SelloutPlatform
+version: 0.1.0
+description: Sellout Platform Ingress
+sources:
+  - https://github.com/sellout/SelloutPlatform
+maintainers:
+  - name: Sam Heutmaker
+    email: sam@soundpack.io

@@ -1,0 +1,9 @@
+name: api
+home: https://github.com/soundpack/soundpack
+version: 0.1.0
+description: SoundPack API
+sources:
+  - https://github.com/soundpack/soundpack
+maintainers:
+  - name: Sam Heutmaker
+    email: sam@soundpack.io

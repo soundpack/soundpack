@@ -1,1 +1,5 @@
+*/node_modules/*
+db
+.dist
 .DS_Store
+secrets
