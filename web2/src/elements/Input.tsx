@@ -44,7 +44,7 @@ export default function Input({
   placeholder,
   value,
   defaultValue,
-  type,
+  type = 'text',
   onChange,
   onBlur,
   onFocus,

@@ -8,8 +8,11 @@ import REGISTER from "../graphql/mutations/register";
 import * as Auth from "../utils/Auth";
 import {
   Container,
+  Header,
   Content,
   Row,
+  Flex,
+  Spacer,
   Text,
   Footer
 } from "./../styles/containers/auth";
@@ -63,23 +66,28 @@ export default function Register() {
 
   return (
     <Container>
-      <Modal title="Login">
+      <Header />
+      <Modal title="Register">
         <Content>
           <Row>
-            <LabeledInput
-              autoFocus
-              label="First Name"
-              placeholder="Sigismund"
-              value={firstName}
-              onChange={onChangeFirstName}
-            />
-            <LabeledInput
-              autoFocus
-              label="Last Name"
-              placeholder="Freud"
-              value={lastName}
-              onChange={onChangeLastName}
-            />
+            <Flex flex="1">
+              <LabeledInput
+                autoFocus
+                label="First Name"
+                placeholder="Sigismund"
+                value={firstName}
+                onChange={onChangeFirstName}
+              />
+            </Flex>
+            <Spacer />
+            <Flex flex="1">
+              <LabeledInput
+                label="Last Name"
+                placeholder="Freud"
+                value={lastName}
+                onChange={onChangeLastName}
+              />
+            </Flex>
           </Row>
           <Row>
             <LabeledInput

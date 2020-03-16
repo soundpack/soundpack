@@ -8,10 +8,11 @@ import LOGIN from "../graphql/mutations/login";
 import * as Auth from "../utils/Auth";
 import {
   Container,
+  Header,
   Content,
   Row,
   Text,
-  Footer,
+  Footer
 } from "./../styles/containers/auth";
 import Joi from "@hapi/joi";
 import * as Schema from '../utils/Schema';
@@ -48,6 +49,7 @@ export default function Login() {
 
   return (
     <Container>
+      <Header />
       <Modal title="Login">
         <Content>
           <Row>
