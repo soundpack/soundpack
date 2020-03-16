@@ -97,18 +97,22 @@ export default function Register() {
     setFieldErrors("firstName", null);
     setFirstName(value);
   });
+  
   const onChangeLastName = eventHandler((value: string) => {
     setFieldErrors("lastName", null);
     setLastname(value);
   });
+
   const onChangeEmail = eventHandler((value: string) => {
     setFieldErrors("email", null);
     setEmail(value);
   });
+
   const onChangePassword = eventHandler((value: string) => {
     setFieldErrors("password", null);
     setPassword(value);
   });
+
   const onChangeConfirmPassword = eventHandler((value: string) => {
     setFieldErrors("confirmPassword", null);
     setConfirmPassword(value);
@@ -126,7 +130,6 @@ export default function Register() {
       await Auth.setToken(token);
     },
     onError: async (error) => {
-      console.error(error);
       const errorMsg = ErrorUtil.getErrorMessage(error);
       setError(errorMsg);
     },

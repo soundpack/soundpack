@@ -1,51 +1,113 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
-import Button, { ButtonTypes } from './../elements/Button';
-import Modal from './../elements/Modal';
+import Joi from "@hapi/joi";
+import Button, { ButtonTypes } from "./../elements/Button";
+import Modal from "./../elements/Modal";
 import LabeledInput from "../elements/LabeledInput";
 import Link from "../elements/Link";
 import LOGIN from "../graphql/mutations/login";
 import * as Auth from "../utils/Auth";
+import * as Schema from "../utils/Schema";
+import * as ErrorUtil from "../utils/ErrorUtil";
 import {
   Container,
   Header,
   Content,
   Row,
   Text,
-  Footer
+  Footer,
+  ErrorText
 } from "./../styles/containers/auth";
-import Joi from "@hapi/joi";
-import * as Schema from '../utils/Schema';
 
-function eventHandler(fn: Function) {
-  return function(event: React.FormEvent<HTMLInputElement>) {
-    fn(event.currentTarget.value as string);
+function makeEventHandler(executeOnEvent: Function) {
+  return function(eventHandler: Function) {
+    return function(event: React.FormEvent<HTMLInputElement>) {
+      executeOnEvent();
+      eventHandler(event.currentTarget.value as string);
+    };
   };
 }
 
 const schema = Joi.object({
-  email: Schema.email(),
-  password: Schema.password(),
+  email: Schema.email().error(([error]) => {
+    const message = "Email is invalid";
+    return new Error(
+      JSON.stringify({
+        field: error.path[0],
+        message
+      })
+    );
+  }),
+  password: Schema.password().error(([error]) => {
+    const message = "Password is invalid";
+    return new Error(
+      JSON.stringify({
+        field: error.path[0],
+        message
+      })
+    );
+  }),
 });
 
-export default function Login() {
+export default function Login() {  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [login, { data, loading, error }] = useMutation(LOGIN, {
+  const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrorsInternal] = useState({
+    email: null,
+    password: null,
+  });
+
+  const eventHandler = makeEventHandler(() => setError(""));
+
+  const setFieldErrors = (field: string, message: string | null) => {
+    const newFieldErrors: any = {
+      [field]: message
+    };
+    setFieldErrorsInternal(newFieldErrors);
+  };
+
+  const onChangeEmail = eventHandler((value: string) => {
+    setFieldErrors("email", null);
+    setEmail(value);
+  });
+
+  const onChangePassword = eventHandler((value: string) => {
+    setFieldErrors("password", null);
+    setPassword(value);
+  });
+
+  const [loginMutation, { loading }] = useMutation(LOGIN, {
     variables: {
       email,
-      password
+      password,
     },
     onCompleted: async ({ login: { token } }) => {
       await Auth.setToken(token);
+    },
+    onError: async error => {
+      const errorMsg = ErrorUtil.getErrorMessage(error);
+      setError(errorMsg);
     }
   });
 
-  const { error: schemaError } = schema.validate({ email, password });
+  const login = () => {
+    const params = schema.validate({
+      email,
+      password,
+    });
 
-  const onChangeEmail = eventHandler((value: string) => setEmail(value));
-  const onChangePassword = eventHandler((value: string) => setPassword(value));
+    const { error: schemaError } = params;
+
+    if (schemaError) {
+      const { field, message } = JSON.parse(schemaError.message);
+      setFieldErrors(field, message);
+      return;
+    }
+
+    loginMutation();
+  };
 
   return (
     <Container>
@@ -54,11 +116,11 @@ export default function Login() {
         <Content>
           <Row>
             <LabeledInput
-              autoFocus
               label="Email"
               placeholder="sigismund@freud.com"
               value={email}
               onChange={onChangeEmail}
+              error={fieldErrors["email"]}
             />
           </Row>
           <Row>
@@ -68,9 +130,17 @@ export default function Login() {
               value={password}
               type="password"
               onChange={onChangePassword}
+              error={fieldErrors["password"]}
             />
           </Row>
-          <Button type={ButtonTypes.Submit} text="Login" margin="20px 0 0" />
+          {error && <ErrorText>{error}</ErrorText>}
+          <Button
+            type={ButtonTypes.Submit}
+            onClick={() => login()}
+            loading={loading}
+            text="Login"
+            margin="20px 0 0"
+          />
           <Footer>
             <Row>
               <Text>Need an account?</Text>&nbsp;
