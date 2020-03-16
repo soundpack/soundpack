@@ -1,19 +1,35 @@
-import React from'react';
+import React, { ReactNode } from'react';
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Colors } from "./../Colors";
 import logoSrc from "./../../assets/images/logo-wide.png";
+import backgroundImageSrc from "./../../assets/images/bg-image.jpeg";
 import * as Polished from 'polished';
 
-export const Container = styled.div`
+export const AuthContainer = styled.div`
   position: absolute;
   height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: ${Polished.rgba(Colors.DarkBlue, 0.97)};
+  background-image: url(${backgroundImageSrc});
+  background-position: left;
 `;
+
+export const Overlay = styled.div`
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: ${Polished.rgba(Colors.DarkBlue, 0.90)};
+`;
+
+export const Container = ({ children }: { children: ReactNode }) => (
+  <AuthContainer>
+    <Overlay />
+    {children}
+  </AuthContainer>
+);
 
 export const HeaderContainer = styled.div`
   height: 25vh;

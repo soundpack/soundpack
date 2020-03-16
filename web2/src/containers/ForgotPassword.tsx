@@ -5,7 +5,7 @@ import Button, { ButtonTypes } from "./../elements/Button";
 import Modal from "./../elements/Modal";
 import LabeledInput from "../elements/LabeledInput";
 import Link from "../elements/Link";
-import LOGIN from "../graphql/mutations/login";
+import FORGOT_PASSWORD from "../graphql/mutations/forgotPassword";
 import * as Auth from "../utils/Auth";
 import * as Schema from "../utils/Schema";
 import * as ErrorUtil from "../utils/ErrorUtil";
@@ -38,25 +38,14 @@ const schema = Joi.object({
       })
     );
   }),
-  password: Schema.password().error(([error]) => {
-    const message = "Password is invalid";
-    return new Error(
-      JSON.stringify({
-        field: error.path[0],
-        message
-      })
-    );
-  }),
 });
 
-export default function Login() {  
+export default function Login() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrorsInternal] = useState({
     email: null,
-    password: null,
   });
 
   const eventHandler = makeEventHandler(() => setError(""));
@@ -73,17 +62,12 @@ export default function Login() {
     setEmail(value);
   });
 
-  const onChangePassword = eventHandler((value: string) => {
-    setFieldErrors("password", null);
-    setPassword(value);
-  });
 
-  const [loginMutation, { loading }] = useMutation(LOGIN, {
+  const [forgotPasswordMutation, { loading }] = useMutation(FORGOT_PASSWORD, {
     variables: {
       email,
-      password,
     },
-    onCompleted: async ({ login: { token } }) => {
+    onCompleted: async ({ forgotPassword: { token } }) => {
       await Auth.setToken(token);
     },
     onError: async error => {
@@ -92,10 +76,9 @@ export default function Login() {
     }
   });
 
-  const login = () => {
+  const forgotPassword = () => {
     const params = schema.validate({
       email,
-      password,
     });
 
     const { error: schemaError } = params;
@@ -106,13 +89,13 @@ export default function Login() {
       return;
     }
 
-    loginMutation();
+    forgotPasswordMutation();
   };
 
   return (
     <Container>
       <Header />
-      <Modal title="Login">
+      <Modal title="Forgot Password">
         <Content>
           <Row>
             <LabeledInput
@@ -124,31 +107,18 @@ export default function Login() {
               error={fieldErrors["email"]}
             />
           </Row>
-          <Row>
-            <LabeledInput
-              label="Password"
-              placeholder="••••••••••••"
-              value={password}
-              type="password"
-              onChange={onChangePassword}
-              error={fieldErrors["password"]}
-            />
-          </Row>
           {error && <ErrorText>{error}</ErrorText>}
           <Button
             type={ButtonTypes.Submit}
-            onClick={() => login()}
+            onClick={() => forgotPassword()}
             loading={loading}
-            text="Login"
+            text="Send Reset Email"
             margin="20px 0 0"
           />
           <Footer>
             <Row>
-              <Text>Need an account?</Text>&nbsp;
-              <Link to="/register">Register</Link>
-            </Row>
-            <Row>
-              <Link to="/forgot-password">Forgot Password</Link>
+              <Text>Remembered?</Text>&nbsp;
+              <Link to="/login">Login</Link>
             </Row>
           </Footer>
         </Content>

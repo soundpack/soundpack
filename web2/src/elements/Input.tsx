@@ -1,6 +1,7 @@
 import React from "react";
 import styled from 'styled-components';
 import { Colors } from '../styles/Colors';
+import * as Polished from 'polished';
 
 type StyledInputProps = {
   margin?: string;
@@ -14,17 +15,37 @@ const InputStyled = styled.input<StyledInputProps>`
   outline: none;
   border: 0px;
   border-radius: 5px;
-  height: 35px;
+  height: 33px;
   width: fill-available;
   font-size: 1.2rem;
   font-weight: 500;
-  padding-left: 10px;
+  padding: 0 0 0 10px;
+  transition: all 0.2s;
   margin: ${props => props.margin};
   padding: ${props => props.padding};
-  border: ${props => props.error ? `1px solid ${Colors.Red}` : null};
+  border: ${props =>
+    props.error
+      ? `1px solid ${Colors.Red}`
+      : `1px solid ${Colors.VeryLightPurple}`};
 
   ::placeholder {
     color: ${Colors.Grey4};
+  }
+
+  &:hover {
+    background-color: ${Polished.darken(0.01, Colors.VeryLightPurple)};
+    border: ${props =>
+      props.error
+        ? `1px solid ${Colors.Red}`
+        : `1px solid ${Polished.darken(0.01, Colors.VeryLightPurple)}`};
+  }
+
+  &:focus {
+    background-color: ${Polished.darken(0.02, Colors.VeryLightPurple)};
+    border: ${props =>
+      props.error
+        ? `1px solid ${Colors.Red}`
+        : `1px solid ${Polished.darken(0.02, Colors.VeryLightPurple)}`};
   }
 `;
 

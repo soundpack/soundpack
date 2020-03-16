@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import Register from "./containers/Register";
 import Login from './containers/Login';
+import ForgotPassword from "./containers/ForgotPassword";
 // import Projects from "./containers/Projects";
 // import NewProject from "./containers/NewProject";
 // import EditProject from "./containers/EditProject";
@@ -21,6 +22,8 @@ export default function App() {
       <Switch>
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
+        <Route exact path="/forgot-password" component={ForgotPassword} />
+
         {/* <Redirect exact to="/dashboard/projects" from="/dashboard" />
         <Route exact path="/dashboard/projects" component={Projects} />
         <Route exact path="/dashboard/projects/new" component={NewProject} />
