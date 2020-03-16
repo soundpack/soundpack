@@ -5,6 +5,7 @@ import { Colors } from '../styles/Colors';
 type StyledInputProps = {
   margin?: string;
   padding?: string;
+  error?: boolean;
 }
 
 const InputStyled = styled.input<StyledInputProps>`
@@ -20,6 +21,7 @@ const InputStyled = styled.input<StyledInputProps>`
   padding-left: 10px;
   margin: ${props => props.margin};
   padding: ${props => props.padding};
+  border: ${props => props.error ? `1px solid ${Colors.Red}` : null};
 
   ::placeholder {
     color: ${Colors.Grey4};
@@ -37,6 +39,7 @@ export type InputProps = {
   onFocus?: any;
   margin?: string;
   padding?: string;
+  error?: string | null;
 }
 
 export default function Input({
@@ -50,6 +53,7 @@ export default function Input({
   onFocus,
   margin,
   padding,
+  error,
 }: InputProps) {
   return (
     <InputStyled
@@ -63,6 +67,7 @@ export default function Input({
       onFocus={onFocus}
       margin={margin}
       padding={padding}
+      error={Boolean(error)}
     />
   );
 }

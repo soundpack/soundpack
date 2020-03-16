@@ -15,6 +15,13 @@ const Label = styled.div`
   margin-bottom: 5px;
 `;
 
+const ErrorText = styled.div`
+  color: ${Colors.Red};
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-top: 5px;
+`;
+
 export type LabeledInputProps = InputProps & {label: string}
 
 export default function LabeledInput({
@@ -25,6 +32,7 @@ export default function LabeledInput({
     <Container>
       <Label>{label}</Label>
       <Input {...inputProps} />
+      {inputProps.error && <ErrorText>{inputProps.error}</ErrorText>}
     </Container>
   );
 }

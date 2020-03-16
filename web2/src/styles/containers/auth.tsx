@@ -54,7 +54,7 @@ export const Row = styled.div`
   position: relative;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   margin-bottom: 10px;
   width: 100%;
@@ -80,3 +80,11 @@ export const Text = styled.div`
 export const Footer = styled.div`
   margin: 20px 0 10px;
 `
+
+export const ErrorText = styled.div`
+  color: ${Colors.Red};
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 20px 0;
+  text-align: center;
+`;

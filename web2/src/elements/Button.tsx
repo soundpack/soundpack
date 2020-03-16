@@ -2,16 +2,22 @@ import React, { Fragment } from "react";
 import styled from "styled-components";
 import { Colors } from "../styles/Colors";
 import * as Polished from 'polished';
+import Loader from './Loader';
+
 // import Icon from "./Icon";
 
 export enum ButtonTypes {
   Submit = "Submit",
-  Warning = "Warning"
+  Warning = "Warning",
 };
+
+export enum ButtonStates {
+  Active = 'Active',
+}
 
 type StyledButtonProps = {
   type: string;
-  onClick: any;
+  onClick?: any;
   margin?: string;
   padding?: string;
 }
@@ -40,27 +46,27 @@ const StyledButton = styled.div<StyledButtonProps>`
   transition: all 0.2s;
 
   &:hover {
-    cursor: pointer;
+    cursor: ${props => props.onClick ? 'pointer' : null};
     background-color: ${props => {
-      if (props.type === ButtonTypes.Submit) {
+      if (props.onClick && props.type === ButtonTypes.Submit) {
         return Polished.lighten(0.025, Colors.Purple);
       }
 
-      if (props.type === ButtonTypes.Warning) {
+      if (props.onClick && props.type === ButtonTypes.Warning) {
         return Polished.lighten(0.025, Colors.Red);
       }
     }};
   }
 
   &:active {
-    top: 1px;
-    cursor: pointer;
+    top: ${props => props.onClick ? '1px' : null};
+    cursor: ${props => props.onClick ? 'pointer' : null};
     background-color: ${props => {
-      if (props.type === ButtonTypes.Submit) {
+      if (props.onClick && props.type === ButtonTypes.Submit) {
         return Polished.darken(0.025, Colors.Purple);
       }
 
-      if (props.type === ButtonTypes.Warning) {
+      if (props.onClick && props.type === ButtonTypes.Warning) {
         return Polished.darken(0.025, Colors.Red);
       }
     }};
@@ -89,6 +95,7 @@ const Text = styled.span<TextProps>`
 
 export type ButtonProps = {
   type: string;
+  state?: string;
   text: string;
   onClick?: any;
   icon?: string;
@@ -99,6 +106,7 @@ export type ButtonProps = {
 
 export default function Button({
   type = ButtonTypes.Submit,
+  state = ButtonStates.Active,
   text,
   onClick = () => {},
   icon,
@@ -109,7 +117,7 @@ export default function Button({
   return (
     <StyledButton
       type={type}
-      onClick={() => onClick()}
+      onClick={loading ? null : () => onClick() }
       margin={margin}
       padding={padding}
     >
@@ -123,9 +131,17 @@ export default function Button({
                 margin="0 10px 0 0"
               />
             )} */}
-            <Text type={type} icon={Boolean(icon)}>
-              {text}
-            </Text>
+            {(() => {
+              if(loading) {
+                return <Loader />
+              }
+              
+              return (
+                <Text type={type} icon={Boolean(icon)}>
+                  {text}
+                </Text>
+              );
+            })()}
           </Fragment>
         );
       })()}
