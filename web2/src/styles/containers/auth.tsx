@@ -32,7 +32,7 @@ export const Container = ({ children }: { children: ReactNode }) => (
 );
 
 export const HeaderContainer = styled.div`
-  height: 25vh;
+  height: 23vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
