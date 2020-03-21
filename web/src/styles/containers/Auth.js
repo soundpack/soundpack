@@ -44,7 +44,6 @@ export const Text = styled.div`
   color: ${colors.white};
 `;
 
-
 const LogoContainer = styled.div`
   display: flex;
   align-items: center;

@@ -1,7 +1,6 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 import { Colors } from "../styles/Colors";
-import * as Polished from "polished";
 
 interface StyledModalProps {}
 

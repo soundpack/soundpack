@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import Register from "./containers/Register";
@@ -20,6 +20,7 @@ export default function App() {
   return (
     <Container>
       <Switch>
+        <Redirect exact from="/" to="/login" />
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/forgot-password" component={ForgotPassword} />

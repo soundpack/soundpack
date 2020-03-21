@@ -9,6 +9,7 @@ import LOGIN from "../graphql/mutations/login";
 import * as Auth from "../utils/Auth";
 import * as Schema from "../utils/Schema";
 import * as ErrorUtil from "../utils/ErrorUtil";
+import makeEventHandler from '../utils/makeEventHandler';
 import {
   Container,
   Header,
@@ -18,15 +19,6 @@ import {
   Footer,
   ErrorText
 } from "./../styles/containers/auth";
-
-function makeEventHandler(executeOnEvent: Function) {
-  return function(eventHandler: Function) {
-    return function(event: React.FormEvent<HTMLInputElement>) {
-      executeOnEvent();
-      eventHandler(event.currentTarget.value as string);
-    };
-  };
-}
 
 const schema = Joi.object({
   email: Schema.email().error(([error]) => {

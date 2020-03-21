@@ -2,7 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import { Colors } from "./../styles/Colors";
 
-const Container = styled.div`
+type ContainerProps = {
+  color: string;
+};
+
+const Container = styled.div<ContainerProps>`
   position: relative;
   top: 1.5px;
 
@@ -22,7 +26,7 @@ const Container = styled.div`
     border: 2px solid #fff;
     border-radius: 50%;
     animation: lds-ring 0.8s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-    border-color: #fff transparent transparent transparent;
+    border-color: ${props => props.color} transparent transparent transparent;
   }
   .lds-ring div:nth-child(1) {
     animation-delay: -0.30s;
@@ -43,9 +47,15 @@ const Container = styled.div`
   }
 `;
 
-export default function Loader() {
+export type LoaderProps = {
+  color?: string;
+};
+
+export default function Loader({
+  color = Colors.White,
+}: LoaderProps) {
   return (
-    <Container>
+    <Container color={color}>
       <div className="lds-ring">
         <div></div>
         <div></div>
