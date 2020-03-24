@@ -127,7 +127,12 @@ export default function Register() {
     },
   });
 
-  const register = () => {
+  const register = (event?: React.FormEvent) => {
+    console.log('REGISTER');
+    if(event) {
+      event.preventDefault();
+    }
+
     const params = schema.validate({
       firstName,
       lastName,
@@ -148,7 +153,7 @@ export default function Register() {
   }
 
   return (
-    <Container>
+    <Container onSubmit={(event: React.FormEvent) => register(event)}>
       <Header />
       <Modal title="Register">
         <Content>

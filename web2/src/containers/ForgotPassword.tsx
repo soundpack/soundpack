@@ -76,7 +76,11 @@ export default function Login() {
     }
   });
 
-  const forgotPassword = () => {
+  const forgotPassword = (event?: React.FormEvent) => {
+    if(event) {
+      event.preventDefault();
+    }
+
     const params = schema.validate({
       email,
     });
@@ -93,7 +97,7 @@ export default function Login() {
   };
 
   return (
-    <Container>
+    <Container onSubmit={(event: React.FormEvent) => forgotPassword(event)}>
       <Header />
       <Modal title="Forgot Password">
         <Content>

@@ -6,7 +6,7 @@ import logoSrc from "./../../assets/images/logo-wide.png";
 import backgroundImageSrc from "./../../assets/images/bg-image.jpeg";
 import * as Polished from 'polished';
 
-export const AuthContainer = styled.div`
+export const AuthContainer = styled.form`
   position: absolute;
   height: 100%;
   width: 100%;
@@ -24,12 +24,19 @@ export const Overlay = styled.div`
   background-color: ${Polished.rgba(Colors.DarkBlue, 0.90)};
 `;
 
-export const Container = ({ children }: { children: ReactNode }) => (
-  <AuthContainer>
-    <Overlay />
-    {children}
-  </AuthContainer>
-);
+type ContainerProps = { 
+  children: ReactNode, 
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void,
+};
+
+export const Container = ({ children, onSubmit }: ContainerProps) => {
+  return (
+    <AuthContainer onSubmit={onSubmit}>
+      <Overlay />
+      {children}
+    </AuthContainer>
+  );
+};
 
 export const HeaderContainer = styled.div`
   height: 23vh;

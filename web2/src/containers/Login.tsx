@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, Component } from "react";
 import { useMutation } from "@apollo/react-hooks";
 import Joi from "@hapi/joi";
 import Button, { ButtonTypes } from "./../elements/Button";
@@ -84,7 +84,12 @@ export default function Login() {
     }
   });
 
-  const login = () => {
+  const login = useCallback((event?: React.FormEvent<HTMLFormElement>) => {
+    console.log('LOGIN CALLED');
+    if (event) {
+      event.preventDefault();
+    }
+
     const params = schema.validate({
       email,
       password,
@@ -99,10 +104,12 @@ export default function Login() {
     }
 
     loginMutation();
-  };
+  }, []);
+
+  
 
   return (
-    <Container>
+    <Container onSubmit={(event: React.FormEvent<HTMLFormElement>) => login(event)}>
       <Header />
       <Modal title="Login">
         <Content>
