@@ -1,5 +1,5 @@
 {
-  "name": "soundpack-web",
+  "name": "@soundpack/web",
   "version": "0.0.1",
   "description": "Soundpack.io Web UI",
   "private": true,

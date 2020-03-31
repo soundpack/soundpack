@@ -1,5 +1,5 @@
 {
-  "name": "soundpack-api",
+  "name": "@soundpack/api",
   "version": "0.0.1",
   "description": "Soundpack.io API",
   "private": true,
