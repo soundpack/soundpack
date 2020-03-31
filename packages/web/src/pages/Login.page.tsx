@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
 import Joi from "@hapi/joi";
 import Button, { ButtonTypes } from "../elements/Button";
@@ -40,7 +40,7 @@ const schema = Joi.object({
 
 type LoginPageProps = {};
 
-const LoginPage: React.FC<LoginPageProps> = ({}) => {
+const LoginPage: React.FC<LoginPageProps> = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -83,8 +83,7 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
     }
   });
 
-  const login = useCallback((event?: React.FormEvent<HTMLFormElement>) => {
-    console.log('LOGIN CALLED');
+  const login = (event?: React.FormEvent<HTMLFormElement>) => {
     if (event) {
       event.preventDefault();
     }
@@ -103,9 +102,7 @@ const LoginPage: React.FC<LoginPageProps> = ({}) => {
     }
 
     loginMutation();
-  }, []);
-
-  
+  };
 
   return (
     <AuthLayout

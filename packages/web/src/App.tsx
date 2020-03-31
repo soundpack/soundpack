@@ -5,6 +5,7 @@ import Login from './pages/Login.page';
 import Register from "./pages/Register.page";
 import ForgotPassword from "./pages/ForgotPassword.page";
 // import { Colors, Loader, LoaderSizes } from "@soundpack/ui";
+import Loader, { LoaderSizes } from './elements/Loader';
 import { Colors } from './styles/Colors';
 
 const Container = styled.div`
@@ -39,13 +40,12 @@ function PageLoader() {
     setTimeout(() => setFade(true), 1000);
   }, []);
 
-  return <div />;
 
-  // return (
-  //   <PageLoaderContainer fade={fade}>
-  //     <Loader size={LoaderSizes.Large} color={Colors.Orange} />
-  //   </PageLoaderContainer>
-  // );
+  return (
+    <PageLoaderContainer fade={fade}>
+      <Loader size={LoaderSizes.Large} color={Colors.Purple} />
+    </PageLoaderContainer>
+  );
 }
 
 // function DashboardContainer({ match }: any) {

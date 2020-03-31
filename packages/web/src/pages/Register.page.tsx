@@ -127,7 +127,6 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
   });
 
   const register = (event?: React.FormEvent) => {
-    console.log('REGISTER');
     if(event) {
       event.preventDefault();
     }

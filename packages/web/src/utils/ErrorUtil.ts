@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import NPECheck from '../utils/NPECheck';
 
 export function getErrorMessage(error: any): string {

@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import * as Polished from "polished";
-import logoSrc from "./../../assets/images/logo-wide.png";
-import backgroundImageSrc from "./../../assets/images/bg-image.jpeg";
+import logoSrc from "./../assets/images/logo-wide.png";
+import backgroundImageSrc from "./../assets/images/bg-image.jpeg";
 import Modal from "./../elements/Modal";
 import { Colors } from '../styles/Colors';
 
