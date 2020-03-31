@@ -1,10 +1,10 @@
 {
   "packages": [
     "packages/api",
-    "packages/web",
     "packages/marketing-site",
     "packages/models",
-    "packages/utils"
+    "packages/utils",
+    "packages/web"
   ],
-  "version": "0.0.0"
+  "version": "0.0.1"
 }
