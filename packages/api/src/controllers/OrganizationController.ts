@@ -1,14 +1,13 @@
-
-// import uuid4 from 'uuid/v4';
 import Joi from 'joi';
-import OrgStore from '../stores/OrgStore';
+import OrganizationStore from '../stores/OrganizationStore';
 import {
   IResourceAPI,
   toError,
   StatusCodeEnum,
   joiToError,
-} from '../interfaces/common';
-import IOrg, {
+} from '../models/interfaces/common';
+import IOrganization from '@soundpack/models/.dist/interfaces/IOrganization';
+import IOrganizationAPI, {
   ICreateOrgRequest,
   ICreateOrgResponse,
   IUpdateOrgRequest,
@@ -19,8 +18,7 @@ import IOrg, {
   IGetOrgResponse,
   IDeleteOrgRequest,
   IDeleteOrgResponse,
-  IOrgController,
-} from '../interfaces/IOrg';
+} from '../models/interfaces/IOrganizationAPI';
 import { IController } from './controller';
 
 const orgSchema = Joi.object().keys({
@@ -45,15 +43,15 @@ const orgSchema = Joi.object().keys({
     .error(() => new Error("Your ranch must have an address.")),
 });
 
-export default class OrgController implements IResourceAPI, IOrgController {
-  private storage = new OrgStore();
+export default class OrganizationController implements IOrganizationAPI {
+  private storage = new OrganizationStore();
   private controller;
 
   constructor(controller: IController) {
     this.controller = controller;
     console.log(this.controller);
   }
-  
+
   public create = async (request: ICreateOrgRequest): Promise<ICreateOrgResponse> => {
     let response: ICreateOrgResponse;
 
@@ -63,7 +61,7 @@ export default class OrgController implements IResourceAPI, IOrgController {
     });
 
     const params = Joi.validate(request, schema);
-    const { userId, org }: { userId: string, org: IOrg } = params.value;
+    const { userId, org }: { userId: string, org: IOrganization } = params.value;
 
     if (params.error) {
       console.error(params.error);
@@ -108,7 +106,7 @@ export default class OrgController implements IResourceAPI, IOrgController {
     });
 
     const params = Joi.validate(request, schema);
-    const { userId, org }: { userId: string, org: IOrg } = params.value;
+    const { userId, org }: { userId: string, org: IOrganization } = params.value;
 
     if (params.error) {
       console.error(params.error);
@@ -181,7 +179,7 @@ export default class OrgController implements IResourceAPI, IOrgController {
       orgId: Joi.string().allow(null).required(),
     });
 
-    
+
 
     const params = Joi.validate(request, schema);
     const { orgId }: { orgId: string } = params.value;
@@ -211,7 +209,7 @@ export default class OrgController implements IResourceAPI, IOrgController {
       return response;
     }
   }
-  
+
   public delete = async (request: IDeleteOrgRequest): Promise<IDeleteOrgResponse> => {
     let response: IDeleteOrgResponse;
 

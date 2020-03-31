@@ -1,5 +1,5 @@
-import IUser from './../interfaces/IUser';
-import { User } from './../models/User';
+import IUser from '@soundpack/models/.dist/interfaces/IUser';
+import User from './../models/schemas/User';
 import Joi from 'joi';
 import bcrypt from 'bcrypt';
 import { UpdateWriteOpResult } from 'mongodb';

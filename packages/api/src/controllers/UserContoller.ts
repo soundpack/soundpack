@@ -2,22 +2,25 @@
 import jwt from 'jsonwebtoken';
 import Joi from 'joi';
 import UserStore from '../stores/UserStore';
-import IUser, {
-  IGetUserRequest,
-  IGetUserResponse,
-  IRegisterRequest,
-  IRegisterResponse,
-  ILoginRequest,
-  ILoginResponse,
-} from '../interfaces/IUser';
-import IOrg, {
-  ICreateOrgRequest
-} from '../interfaces/IOrg';
-import { toError, StatusCodeEnum, } from './../interfaces/common';
+import IUser from '@soundpack/models/.dist/interfaces/IUser';
+import IOrganization from '@soundpack/models/.dist/interfaces/IOrganization';
+import { ICreateOrgRequest } from '../models/interfaces/IOrganizationAPI';
+import StatusCodeEnum from '../models/enums/StatusCodeEnum';
+import { toError, } from './../models/interfaces/common';
 import { JWT_SECRET } from './../env';
 import { IController } from './controller';
+import IUserAPI, {
+  IRegisterUserRequest,
+  ILoginUserRequest,
+  IRegisterUserResponse,
+  ILoginUserResponse,
+  IGetUserRequest,
+  IGetUserResponse,
+  IUpdateUserRequest,
+  IUpdateUserResponse,
+} from 'src/models/interfaces/IUserAPI';
 
-export default class UserController {
+export default class UserController implements IUserAPI{
   private storage = new UserStore();
   private controller;
 
@@ -29,45 +32,9 @@ export default class UserController {
   private generateJWT = (user: IUser): string => {
     return jwt.sign({ _id: user._id, email: user.email, orgId: user.orgId }, JWT_SECRET);
   }
-
-  public get = async (request: IGetUserRequest): Promise<IGetUserResponse> => {
-    let response: IGetUserResponse;
-
-    const schema = Joi.object().keys({
-      userId: Joi.string().required(),
-    });
-
-    const params = Joi.validate(request, schema);
-    const { userId }: { userId: string } = params.value;
-
-    if (params.error) {
-      console.error(params.error);
-      response = {
-        status: StatusCodeEnum.UNPROCESSABLE_ENTITY,
-        error: toError(params.error.details[0].message),
-      };
-      return response;
-    }
-
-    try {
-      const user = await this.storage.get(userId);
-      response = {
-        status: StatusCodeEnum.OK,
-        user,
-      };
-      return response;
-    } catch (e) {
-      console.error(e);
-      response = {
-        status: StatusCodeEnum.INTERNAL_SERVER_ERROR,
-        error: toError(e.message),
-      };
-      return response;
-    }
-  }
   
-  public register = async (request: IRegisterRequest): Promise<IRegisterResponse> => {
-    let response: IRegisterResponse;
+  public register = async (request: IRegisterUserRequest): Promise<IRegisterUserResponse> => {
+    let response: IRegisterUserResponse;
 
     const schema = Joi.object().keys({
       email: Joi.string().email().required(),
@@ -108,7 +75,6 @@ export default class UserController {
     if (existingUser && existingUser.email) {
     
       const errorMsg = 'An account with this email already exists.'
-      console.error(errorMsg);
       response = {
         status:  StatusCodeEnum.BAD_REQUEST,
         error: toError(errorMsg),
@@ -146,7 +112,9 @@ export default class UserController {
     */
     try {
       const request: ICreateOrgRequest = {
-        userId: user._id,
+        auth: {
+          userId: user._id,
+        },
         org: {
           name: `${firstName} ${lastName}'s Ranch`,
           email,
@@ -156,7 +124,7 @@ export default class UserController {
         },
       }
 
-      const { org }: { org: IOrg} = await this.controller.org.create(request);
+      const { org }: { org: IOrganization} = await this.controller.org.create(request);
       user = await this.storage.setOrgId(user._id, org._id);
       
     } catch (e) {
@@ -168,8 +136,6 @@ export default class UserController {
       return response;
     }
 
-    console.log(user);
-
     response = {
       status: StatusCodeEnum.OK,
       token: this.generateJWT(user),
@@ -179,8 +145,8 @@ export default class UserController {
     return response;
   }
 
-  public login = async (request: ILoginRequest): Promise<ILoginResponse> => {
-    let response: ILoginResponse;
+  public login = async (request: ILoginUserRequest): Promise<ILoginUserResponse> => {
+    let response: ILoginUserResponse;
 
     const schema = Joi.object().keys({
       email: Joi.string().email().required(),
@@ -254,6 +220,42 @@ export default class UserController {
     };
 
     return response;
+  }
+
+  public get = async (request: IGetUserRequest): Promise<IGetUserResponse> => {
+    let response: IGetUserResponse;
+
+    const schema = Joi.object().keys({
+      userId: Joi.string().required(),
+    });
+
+    const params = Joi.validate(request, schema);
+    const { userId }: { userId: string } = params.value;
+
+    if (params.error) {
+      console.error(params.error);
+      response = {
+        status: StatusCodeEnum.UNPROCESSABLE_ENTITY,
+        error: toError(params.error.details[0].message),
+      };
+      return response;
+    }
+
+    try {
+      const user = await this.storage.get(userId);
+      response = {
+        status: StatusCodeEnum.OK,
+        user,
+      };
+      return response;
+    } catch (e) {
+      console.error(e);
+      response = {
+        status: StatusCodeEnum.INTERNAL_SERVER_ERROR,
+        error: toError(e.message),
+      };
+      return response;
+    }
   }
 
 }

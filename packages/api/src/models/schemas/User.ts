@@ -1,5 +1,5 @@
 import { Document, Schema, Model, model } from 'mongoose';
-import IUser from './../interfaces/IUser';
+import IUser from '@soundpack/models/.dist/interfaces/IUser';
 import shortid from 'shortid';
 
 export interface IUserModel extends IUser, Document {
@@ -68,4 +68,6 @@ export const UserSchema  = new Schema({
   },
 });
 
-export const User: Model<IUserModel> = model<IUserModel>('User', UserSchema);
+const User: Model<IUserModel> = model<IUserModel>('User', UserSchema);
+
+export default User;

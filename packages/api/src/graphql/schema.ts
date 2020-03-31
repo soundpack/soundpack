@@ -4,9 +4,8 @@ import { makeExecutableSchema } from "graphql-tools";
 import { GraphQLUpload } from "graphql-upload"
 import { GraphQLDateTime } from 'graphql-iso-date';
 import userResolvers from "./resolvers/userResolvers";
-import listingResolvers from "./resolvers/listingResolvers";
 import fileUploadResolvers from "./resolvers/fileUploadResolvers";
-import orgResolvers from "./resolvers/orgResolvers";
+import organizationResolvers from "./resolvers/organizationResolvers";
 
 const schema = gql`
   scalar Upload
@@ -24,7 +23,7 @@ const schema = gql`
     phoneNumber: String
     createdAt: Float
     orgId: String
-    org: Org
+    organization: Organization
   }
 
   input UserInput {
@@ -44,72 +43,7 @@ const schema = gql`
   # Listing
   ######################################################################
 
-  type Listing {
-    _id: String
-    orgId: String
-    org: Org
-    createdAt: GraphQLDateTime
-    updatedAt: GraphQLDateTime
-    active: Boolean
-    title:String 
-    minPrice: Int
-    askPrice: Int
-    location:String 
-    imageUrls: [String]
-    videoUrls: [String]
-    numberOfHead: Int
-    class:String 
-    weight: Int
-    origin:String 
-    slide: Int
-    slideTerms:String 
-    breed:String 
-    bodyCondition: Int
-    flesh:String 
-    estWeightVariance: String
-    feedHistory:String 
-    estDeliveryDate: GraphQLDateTime
-    weighingConditions:String 
-    vaccs:String 
-    implanted: Boolean
-    ageSourceVerfieid: Boolean
-    horns: Boolean
-    comments: String  
-  }
-
-  input ListingInput {
-    _id: String
-    title: String
-    minPrice: Int
-    askPrice: Int
-    location:String 
-    imageUrls: [String]
-    videoUrls: [String]
-    numberOfHead: Int
-    class:String 
-    weight: Int
-    origin:String 
-    slide: Int
-    slideTerms:String 
-    breed:String 
-    bodyCondition: Int
-    flesh:String 
-    estWeightVariance: String
-    feedHistory:String 
-    estDeliveryDate: GraphQLDateTime
-    weighingConditions:String 
-    vaccs:String 
-    implanted: Boolean
-    ageSourceVerfieid: Boolean
-    horns: Boolean
-    comments: String  
-  }
-
-    ######################################################################
-  # Listing
-  ######################################################################
-
-  type Org {
+  type Organization {
     _id: String
     userId: String
     user: User
@@ -156,7 +90,7 @@ const schema = gql`
     listings(orgId: String): [Listing]
 
     # Org
-    org(orgId: String): Org
+    org(orgId: String): Organization
   }
 
   type Mutation {
@@ -171,7 +105,7 @@ const schema = gql`
 
 
     # Org
-    updateOrg(org: OrgInput!): Org
+    updateOrg(org: OrgInput!): Organization
     deleteOrg(orgId: String!): Boolean    
    
     # Miscellaneous
@@ -181,8 +115,7 @@ const schema = gql`
 
 export const resolvers = merge(
   userResolvers,
-  listingResolvers,
-  orgResolvers,
+  organizationResolvers,
   fileUploadResolvers,
 );
 
@@ -191,15 +124,11 @@ export const executableSchema = makeExecutableSchema({
     Upload: GraphQLUpload,
     GraphQLDateTime: GraphQLDateTime,
     User: {
-      org: (user, args, context) => orgResolvers.Query.org(null, { orgId: user.orgId }, context),
+      organization: (user, args, context) => organizationResolvers.Query.org(null, { orgId: user.orgId }, context),
     },
-    Org: {
+    Organization: {
       user: (org, args, context) => userResolvers.Query.user(org, null, context),
     },
-    Listing: {
-      org: (listing, args, context) => orgResolvers.Query.org(null, { orgId: listing.orgId }, context),
-    },
-
     ...resolvers,
   },
   typeDefs: schema

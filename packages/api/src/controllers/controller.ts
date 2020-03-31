@@ -1,24 +1,19 @@
 import UserController from './UserContoller';
-import ListingController from './ListingController';
-import OrgController from './OrgController';
+import OrganizationController from './OrganizationController';
 
 export interface IController {
   user: UserController;
-  listing: ListingController;
-  org: OrgController;
+  org: OrganizationController;
 }
 
 class Controller {
   public user: UserController;
-  public listing: ListingController;
-  public org: OrgController;
+  public org: OrganizationController;
 
   constructor() {
     this.user = new UserController(this);
-    this.listing = new ListingController(this);
-    this.org = new OrgController(this);
+    this.org = new OrganizationController(this);
   }
 }
 
 export default new Controller();
-

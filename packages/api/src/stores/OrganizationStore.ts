@@ -1,5 +1,5 @@
-import IOrg from './../interfaces/IOrg';
-import { Org } from './../models/Org';
+import IOrganization from '@soundpack/models/.dist/interfaces/IOrganization';
+import Organization from '../models/schemas/Organization';
 
 export default class OrgStore {
   public static OPERATION_UNSUCCESSFUL = class extends Error {
@@ -8,8 +8,8 @@ export default class OrgStore {
     }
   };
 
-  public async create(attributes: IOrg): Promise<IOrg> {
-    let org = new Org(attributes);
+  public async create(attributes: IOrganization): Promise<IOrganization> {
+    let org = new Organization(attributes);
     try {
       return await org.save();
     } catch (e) {
@@ -18,9 +18,9 @@ export default class OrgStore {
     }
   }
 
-  public async update(userId: string, org: IOrg): Promise<IOrg> {
+  public async update(userId: string, org: IOrganization): Promise<IOrganization> {
     try {
-      return await Org.findOneAndUpdate(
+      return await Organization.findOneAndUpdate(
       { 
         userId: userId,
         _id: org._id
@@ -37,18 +37,18 @@ export default class OrgStore {
     }
   }
 
-  public async list(userId: string): Promise<IOrg[]> {
+  public async list(userId: string): Promise<IOrganization[]> {
     try {
-      return await Org.find(userId ? { userId } : null);
+      return await Organization.find(userId ? { userId } : null);
     } catch (e) {
       console.error(e);
       return Promise.reject(new OrgStore.OPERATION_UNSUCCESSFUL());
     }
   }
 
-  public async get(orgId: string): Promise<IOrg> {
+  public async get(orgId: string): Promise<IOrganization> {
     try {
-      return await Org.findById(orgId);
+      return await Organization.findById(orgId);
     } catch (e) {
       console.error(e);
       return Promise.reject(new OrgStore.OPERATION_UNSUCCESSFUL());
@@ -56,9 +56,9 @@ export default class OrgStore {
   }
   
   public async delete(userId: string, orgId: string): Promise<boolean> {
-    let org: IOrg;
+    let org: IOrganization;
     try {
-      org = await Org.findOneAndUpdate(
+      org = await Organization.findOneAndUpdate(
         {
           userId: userId,
           _id: orgId

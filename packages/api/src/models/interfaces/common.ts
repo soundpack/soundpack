@@ -7,12 +7,21 @@ export interface IResponse {
   error?: IError;
 }
 
-export interface IAuthenticatedRequest extends IRequest {
+
+export interface IAuthenticationData {
   userId: string;
 }
 
-export interface IAuthorizedRequest extends IAuthenticatedRequest {
+export interface IAuthorizationData extends IAuthenticationData {
   orgId: string;
+}
+
+export interface IAuthenticatedRequest extends IRequest {
+  auth: IAuthenticationData;
+}
+
+export interface IAuthorizedRequest extends IRequest {
+  auth: IAuthorizationData;
 }
 
 export interface IDeleteResponse extends IResponse {
@@ -26,11 +35,10 @@ export interface IError {
 export interface IResourceAPI {
   create(request: IAuthenticatedRequest): Promise<IResponse>;
   update(request: IAuthenticatedRequest): Promise<IResponse>;
-  list(request: IRequest): Promise<IResponse>;
-  get(request: IRequest): Promise<IResponse>;
+  list(request: IAuthenticatedRequest): Promise<IResponse>;
+  get(request: IAuthenticatedRequest): Promise<IResponse>;
   delete(request: IAuthenticatedRequest): Promise<IDeleteResponse>;
 }
-
 
 export enum StatusCodeEnum {
   UNKNOWN_CODE = 0,

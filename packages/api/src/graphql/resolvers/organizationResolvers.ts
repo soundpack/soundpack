@@ -1,4 +1,4 @@
-import { StatusCodeEnum } from '../../interfaces/common';
+import StatusCodeEnum from '../../models/enums/StatusCodeEnum';
 import {
   ApolloError,
   AuthenticationError,
@@ -11,15 +11,19 @@ import {
   IGetOrgResponse,
   IDeleteOrgRequest,
   IDeleteOrgResponse,
-} from '../../interfaces/IOrg';
+} from '../../models/interfaces/IOrganizationAPI';
 
 export default {
   Query: { 
     async org(parent, args, context) {
-      const { req: { user: { orgId } } } = context;
+      const { req: { user } } = context;
 
       const request: IGetOrgRequest = {
-        orgId: args.orgId  || orgId
+        auth: {
+          userId: user._id,
+          orgId: user.orgId,
+        }
+        
       }
 
       let response: IGetOrgResponse;

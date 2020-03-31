@@ -1,12 +1,12 @@
 import { Document, Schema, Model, model } from 'mongoose';
-import IOrg from './../interfaces/IOrg';
+import IOrganization from '@soundpack/models/.dist/interfaces/IOrganization';
 import shortid from 'shortid';
 
-export interface IOrgModel extends IOrg, Document {
+export interface IOrganizationModel extends IOrganization, Document {
   _id: string,
 }
 
-export const OrgSchema = new Schema({
+export const OrganizationSchema = new Schema({
   _id: {
     type: String,
     required: true,
@@ -51,4 +51,6 @@ export const OrgSchema = new Schema({
   },
 });
 
-export const Org: Model<IOrgModel> = model<IOrgModel>('Org', OrgSchema);
+const Organization: Model<IOrganizationModel> = model<IOrganizationModel>('Organization', OrganizationSchema);
+
+export default Organization;
