@@ -1,6 +1,6 @@
 {
   "name": "@soundpack/utils",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Soundpack.io utilities",
   "scripts": {
     "prepare": "npm run build",
@@ -24,5 +24,8 @@
     "nodemon": "^2.0.2",
     "typescript": "^3.8.3"
   },
-  "gitHead": "19b925444e0cfb93b3bb54ade2a90d2b2fa6b8ed"
+  "gitHead": "19b925444e0cfb93b3bb54ade2a90d2b2fa6b8ed",
+  "publishConfig": {
+    "access": "public"
+  }
 }
