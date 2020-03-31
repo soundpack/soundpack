@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import Login from './pages/Login.page';
 import Register from "./pages/Register.page";
 import ForgotPassword from "./pages/ForgotPassword.page";
-// import { Colors, Loader, LoaderSizes } from "@soundpack/ui";
 import Loader, { LoaderSizes } from './elements/Loader';
 import { Colors } from './styles/Colors';
 
