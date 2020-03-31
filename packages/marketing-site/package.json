@@ -1,7 +1,7 @@
 {
   "name": "@soundpack/marketing-site",
   "description": "Soundpack.io marketing site",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "dependencies": {
     "classnames": "^2.2.6",
