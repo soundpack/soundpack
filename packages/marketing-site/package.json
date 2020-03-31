@@ -4,6 +4,7 @@
   "version": "0.0.3",
   "private": true,
   "dependencies": {
+    "@soundpack/models": "^0.0.3",
     "@soundpack/utils": "^0.0.3",
     "classnames": "^2.2.6",
     "lodash": "^4.17.15",
