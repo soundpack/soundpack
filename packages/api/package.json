@@ -1,7 +1,8 @@
 {
-  "name": "api",
-  "version": "1.0.0",
-  "description": "The API",
+  "name": "soundpack-api",
+  "version": "0.0.1",
+  "description": "Soundpack.io API",
+  "private": true,
   "main": "index.js",
   "directories": {
     "test": "test"

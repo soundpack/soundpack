@@ -1,7 +1,7 @@
 {
   "name": "@soundpack/utils",
-  "version": "0.0.7",
-  "description": "soundpack.io utils",
+  "version": "0.0.1",
+  "description": "Soundpack.io utilities",
   "scripts": {
     "prepare": "npm run build",
     "build": "tsc --project .",

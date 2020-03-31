@@ -1,7 +1,7 @@
 {
   "name": "@soundpack/models",
-  "version": "0.0.7",
-  "description": "soundpack.io models",
+  "version": "0.0.1",
+  "description": "Soundpack.io Models",
   "main": "index.js",
   "scripts": {
     "prepare": "npm run build",
