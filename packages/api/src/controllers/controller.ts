@@ -1,18 +1,18 @@
-import UserController from './UserContoller';
-import OrganizationController from './OrganizationController';
+import UserController from './user.controller';
+import OrganizationController from './organization.controller';
 
 export interface IController {
   user: UserController;
-  org: OrganizationController;
+  organization: OrganizationController;
 }
 
-class Controller {
+class Controller implements IController {
   public user: UserController;
-  public org: OrganizationController;
+  public organization: OrganizationController;
 
   constructor() {
     this.user = new UserController(this);
-    this.org = new OrganizationController(this);
+    this.organization = new OrganizationController(this);
   }
 }
 

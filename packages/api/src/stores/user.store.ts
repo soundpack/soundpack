@@ -1,5 +1,5 @@
 import IUser from '@soundpack/models/.dist/interfaces/IUser';
-import User from './../models/schemas/User';
+import User from '../models/schemas/User';
 import Joi from 'joi';
 import bcrypt from 'bcrypt';
 import { UpdateWriteOpResult } from 'mongodb';
@@ -28,6 +28,7 @@ export default class UserStore {
       lastName: Joi.string().required(),
       phoneNumber: Joi.string().optional(),
       createdAt: Joi.number().required(),
+      organizationId: Joi.string().allow(null),
     });
 
     const params = Joi.validate(attributes, schema);
@@ -37,6 +38,7 @@ export default class UserStore {
       firstName, 
       lastName, 
       phoneNumber, 
+      organizationId,
       createdAt 
     } = params.value;
 
@@ -50,6 +52,7 @@ export default class UserStore {
       firstName,
       lastName,
       phoneNumber,
+      organizationId,
       createdAt
     };
 

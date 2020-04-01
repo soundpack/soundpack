@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import OrganizationStore from '../stores/OrganizationStore';
+import OrganizationStore from '../stores/organization.store';
 import {
   toError,
   StatusCodeEnum,
@@ -26,21 +26,25 @@ const orgSchema = Joi.object().keys({
   createdAt: Joi.date().optional(),
   name: Joi.string()
     .required()
-    .error(() => new Error("Your ranch must have a name.")),
+    .error(() => new Error("Your team must have a name.")),
   email: Joi.string()
     .required()
-    .error(() => new Error("Your ranch must have an email.")),
+    .error(() => new Error("Your team must have an email.")),
   phoneNumber: Joi.string()
-    .required()
-    .error(() => new Error("Your ranch must have a phone number.")),
+    .optional()
+    .error(() => new Error("Your team must have a phone number.")),
   description: Joi.string()
-    .required()
-    .error(() => new Error("Your ranch must have a description.")),
+    .optional()
+    .error(() => new Error("Your team must have a description.")),
   address: Joi.string()
     .optional()
     .allow('')
-    .error(() => new Error("Your ranch must have an address.")),
+    .error(() => new Error("Your team must have an address.")),
 });
+
+const authenticatedSchema = Joi.object().keys({
+  userId: Joi.string().required(),
+})
 
 export default class OrganizationController implements IOrganizationAPI {
   private storage = new OrganizationStore();
@@ -55,12 +59,12 @@ export default class OrganizationController implements IOrganizationAPI {
     let response: ICreateOrgResponse;
 
     const schema = Joi.object().keys({
-      userId: Joi.string().required(),
+      auth: authenticatedSchema,
       organization: orgSchema,
     });
 
     const params = Joi.validate(request, schema);
-    const { userId, organization }: { userId: string, organization: IOrganization } = params.value;
+    const {  organization }: { organization: IOrganization } = params.value;
 
     if (params.error) {
       console.error(params.error);
@@ -75,7 +79,6 @@ export default class OrganizationController implements IOrganizationAPI {
     * Save the organization to storage
     */
     const now = new Date();
-    organization.userId = userId;
     organization.createdAt = now;
     organization.updatedAt = now;
 

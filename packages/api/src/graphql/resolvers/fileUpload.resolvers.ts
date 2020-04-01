@@ -4,7 +4,7 @@ import {
   ApolloError,
   AuthenticationError,
 } from 'apollo-server-express';
-import fileUploadService from '../../services/fileUploadService';
+import fileUploadService from '../../services/fileUpload.service';
 
 function streamToBuffer(stream): Promise<Buffer> {
   return new Promise((resolve, reject) => {

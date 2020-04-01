@@ -8,7 +8,6 @@ const mutation = gql`
         firstName
         lastName
         email
-        phoneNumber
         createdAt
       }
       token

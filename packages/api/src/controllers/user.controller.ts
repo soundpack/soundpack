@@ -1,13 +1,13 @@
 
 import jwt from 'jsonwebtoken';
 import Joi from 'joi';
-import UserStore from '../stores/UserStore';
+import UserStore from '../stores/user.store';
 import IUser from '@soundpack/models/.dist/interfaces/IUser';
 import IOrganization from '@soundpack/models/.dist/interfaces/IOrganization';
-import { ICreateOrgRequest } from '../models/interfaces/IOrganizationAPI';
+import { ICreateOrgRequest, ICreateOrgResponse } from '../models/interfaces/IOrganizationAPI';
 import StatusCodeEnum from '../models/enums/StatusCodeEnum';
-import { toError, } from './../models/interfaces/common';
-import { JWT_SECRET } from './../env';
+import { toError, } from '../models/interfaces/common';
+import { JWT_SECRET } from '../env';
 import { IController } from './controller';
 import IUserAPI, {
   IRegisterUserRequest,
@@ -24,7 +24,6 @@ export default class UserController implements IUserAPI{
 
   constructor(controller: IController) {
     this.controller = controller;
-    console.log(this.controller);
   }
 
   private generateJWT = (user: IUser): string => {
@@ -71,7 +70,6 @@ export default class UserController implements IUserAPI{
     }
 
     if (existingUser && existingUser.email) {
-    
       const errorMsg = 'An account with this email already exists.'
       response = {
         status:  StatusCodeEnum.BAD_REQUEST,
@@ -115,6 +113,7 @@ export default class UserController implements IUserAPI{
           userId: user._id,
         },
         organization: {
+          userId: user._id,
           name: `${firstName} ${lastName}'s Team`,
           email: email,
           phoneNumber: phoneNumber,
@@ -123,9 +122,10 @@ export default class UserController implements IUserAPI{
         },
       }
 
-      const { organization }: { organization: IOrganization} = await this.controller.organization.create(request);
+      const response: ICreateOrgResponse = await this.controller.organization.create(request);
+      const { organization } = response;
+
       user = await this.storage.setOrganizationId(user._id, organization._id);
-      
     } catch (e) {
       console.error(e);
       response = {

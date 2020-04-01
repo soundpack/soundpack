@@ -16,7 +16,7 @@ import {
 
 export default {
   Query: { 
-    async org(parent, args, context) {
+    async organization(parent, args, context) {
       const { req: { user } }: { req: { user: IUser } } = context;
 
       const request: IGetOrgRequest = {
@@ -30,7 +30,7 @@ export default {
       let response: IGetOrgResponse;
 
       try {
-        response = await controller.org.get(request);
+        response = await controller.organization.get(request);
 
         if (response.status !== StatusCodeEnum.OK) {
           throw new ApolloError(response.error.message, response.status.toString());
@@ -44,7 +44,7 @@ export default {
     },
   },
   Mutation: {
-    async updateOrg(parent, args, context) {
+    async updateOrganization(parent, args, context) {
       const { req: { user } }: { req: { user: IUser } } = context;
 
       if (!user._id) {
@@ -60,13 +60,13 @@ export default {
           userId: user._id,
           organizationId: user.organizationId,
         },
-        organization: args.org,
+        organization: args.organization,
       }
 
       let response: IUpdateOrgResponse;
 
       try {
-        response = await controller.org.update(request);
+        response = await controller.organization.update(request);
 
         if (response.status !== StatusCodeEnum.OK) {
           throw new ApolloError(response.error.message, response.status.toString());
@@ -78,7 +78,7 @@ export default {
 
       return response.organization;
     },
-    async deleteOrg(parent, args, context) {
+    async deleteOrganization(parent, args, context) {
       const { req: { user } }: { req: { user: IUser } } = context;
 
       if (!user._id) {
@@ -100,7 +100,7 @@ export default {
       let response: IDeleteOrgResponse;
 
       try {
-        response = await controller.org.delete(request);
+        response = await controller.organization.delete(request);
 
         if (response.status !== StatusCodeEnum.OK) {
           throw new ApolloError(response.error.message, response.status.toString());

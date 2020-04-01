@@ -3,9 +3,9 @@ import { merge } from "lodash";
 import { makeExecutableSchema } from "graphql-tools";
 import { GraphQLUpload } from "graphql-upload"
 import { GraphQLDateTime } from 'graphql-iso-date';
-import userResolvers from "./resolvers/userResolvers";
-import fileUploadResolvers from "./resolvers/fileUploadResolvers";
-import organizationResolvers from "./resolvers/organizationResolvers";
+import userResolvers from "./resolvers/user.resolvers";
+import fileUploadResolvers from "./resolvers/fileUpload.resolvers";
+import organizationResolvers from "./resolvers/organization.resolvers";
 
 const schema = gql`
   scalar Upload
@@ -30,7 +30,7 @@ const schema = gql`
     firstName: String!
     lastName: String!
     email: String!
-    phoneNumber: String!
+    phoneNumber: String
     password: String!
   }
 
@@ -70,7 +70,7 @@ const schema = gql`
   # Miscellaneous
   ######################################################################
   
-    type File {
+  type File {
     filename: String!
     mimetype: String!
     encoding: String!
@@ -86,7 +86,7 @@ const schema = gql`
     user: User
 
     # Org
-    org(organizationId: String): Organization
+    organization(organizationId: String): Organization
   }
 
   type Mutation {
@@ -94,9 +94,9 @@ const schema = gql`
     register(user: UserInput!): Authentication
     login(email: String!, password: String!): Authentication
 
-    # Org
-    updateOrg(org: OrgInput!): Organization
-    deleteOrg(organizationId: String!): Boolean    
+    # Organization
+    updateOrganization(organization: OrgInput!): Organization
+    deleteOrganization(organizationId: String!): Boolean    
    
     # Miscellaneous
     uploadFiles(files: [Upload!]!): [File!]!
@@ -114,7 +114,7 @@ export const executableSchema = makeExecutableSchema({
     Upload: GraphQLUpload,
     GraphQLDateTime: GraphQLDateTime,
     User: {
-      organization: (user, args, context) => organizationResolvers.Query.org(null, { organizationId: user.organizationId }, context),
+      organization: (user, args, context) => organizationResolvers.Query.organization(null, { organizationId: user.organizationId }, context),
     },
     Organization: {
       user: (org, args, context) => userResolvers.Query.user(org, null, context),
