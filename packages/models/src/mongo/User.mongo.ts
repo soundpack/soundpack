@@ -50,12 +50,12 @@ export default {
     required: false,
     default: null,
   },
-  forgotPasswordCode: {
+  resetPasswordCode: {
     type: String,
     required: false,
     default: null,
   },
-  lastChangedPasswordAt: {
+  resetPasswordCodeSetAt: {
     type: Number,
     required: false,
     default: null

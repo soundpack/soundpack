@@ -139,20 +139,25 @@ export default class UserStore {
 
     return isValid;
   }
-  public async forgotPassword(email: string, forgotPasswordCode: string): Promise<IUser> {
+  public async setResetPasswordCode(email: string, resetPasswordCode: string): Promise<IUser> {
     let user: IUser;
     try {
-      user = await User.findOneAndUpdate({ email }, { $set: { forgotPasswordCode } }, { new: true });
-      // user = await User.updateOne({ email }, { $set: { forgotPasswordCode } }, {new: true});
+      user = await User.findOneAndUpdate(
+        { email },
+        { $set: { 
+          resetPasswordCode,
+          resetPasswordCodeSetAt: Date.now(),
+        } },
+        { new: true }
+      );
     } catch (e) {
       return Promise.reject(new UserStore.OPERATION_UNSUCCESSFUL());
     }
     return user;
   }
-  public async resetPassword(forgotPasswordCode: string, newPassword: string): Promise<boolean> {
-    let put: UpdateWriteOpResult['result'];
-    let passwordHash;
-
+  public async resetPassword(resetPasswordCode: string, newPassword: string): Promise<IUser> {
+     let user: IUser;
+     let passwordHash;
     try {
       passwordHash = await this.hashPassword(newPassword);
     } catch (e) {
@@ -160,12 +165,22 @@ export default class UserStore {
     } 
     
     try {
-      put = await User.updateOne({ forgotPasswordCode }, { $set: { passwordHash, lastChangedPasswordAt: Date.now() }});
-    } catch(e) {
+      user = await User.findOneAndUpdate(
+        { resetPasswordCode },
+        {
+          $set: {
+            passwordHash,
+            resetPasswordCode: null,
+            resetPasswordCodeSetAt: null,
+          }
+        },
+        { new: true }
+      );
+    } catch (e) {
       return Promise.reject(new UserStore.OPERATION_UNSUCCESSFUL());
     }
 
-    return put.nModified ===1;
+    return user;
   }
   public async get(userId: string): Promise<IUser> {
     let user: IUser;
@@ -187,5 +202,4 @@ export default class UserStore {
     
     return user
   }
-
 }

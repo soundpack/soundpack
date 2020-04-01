@@ -12,6 +12,8 @@ import {
   ILoginUserResponse,
   ISendUserPasswordResetRequest,
   ISendUserPasswordResetResponse,
+  IResetUserPasswordRequest,
+  IResetUserPasswordResponse,
 } from '../../models/interfaces/IUserAPI';
 
 export default {
@@ -112,6 +114,31 @@ export default {
       }
 
       return true;
+    },
+    async resetPassword(parent, args, context) {
+      const { 
+        resetPasswordCode,
+        password,
+      } = args;
+
+      const request: IResetUserPasswordRequest = {
+        resetPasswordCode,
+        password,
+      };
+
+      let response: IResetUserPasswordResponse;
+
+      try {
+        response = await controller.user.resetPassword(request);
+
+        if (response.status !== StatusCodeEnum.OK) {
+          throw new ApolloError(response.error.message, response.status.toString());
+        }
+      } catch (e) {
+        throw e;
+      }
+
+      return response;
     }
   }
 };

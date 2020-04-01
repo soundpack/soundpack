@@ -11,11 +11,11 @@ export default {
     required: false,
   },
   createdAt: {
-    type:  Date,
+    type:  Number,
     required: false,
   },
   lastUpdatedAt: {
-    type: Date,
+    type: Number,
     required: false,
   },
   active: {

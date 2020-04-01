@@ -4,8 +4,8 @@ export default interface IProject {
   active?: boolean;
   name: string;
   description?: string;
-  createdAt?: Date;
+  createdAt?: number;
   createdBy?: string;
-  lastUpdatedAt?: Date;
+  lastUpdatedAt?: number;
   lastUpdatedBy?: string;
 }

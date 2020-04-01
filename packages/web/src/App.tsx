@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Login from './pages/Login.page';
 import Register from "./pages/Register.page";
 import ForgotPassword from "./pages/ForgotPassword.page";
+import ResetPassword from "./pages/ResetPassword.page";
 import Loader, { LoaderSizes } from './elements/Loader';
 import { Colors } from './styles/Colors';
 
@@ -84,6 +85,7 @@ export default function App() {
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <Route path="/forgot-password" component={ForgotPassword} />
+          <Route path="/reset-password" component={ResetPassword} />
         </Switch>
       </Container>
     </Fragment>

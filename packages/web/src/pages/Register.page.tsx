@@ -60,11 +60,11 @@ const schema = Joi.object({
 type RegisterPageProps = {};
 
 const RegisterPage: React.FC<RegisterPageProps> = () => {
-  const [firstName, setFirstName] = useState("Sam");
-  const [lastName, setLastname] = useState("Heutmaker");
-  const [email, setEmail] = useState("samheutmaker@gmail.com");
-  const [password, setPassword] = useState("kingpin13");
-  const [confirmPassword, setConfirmPassword] = useState("kingpin13");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrorsInternal] = useState({

@@ -41,7 +41,7 @@ export default {
     required: false,
   },
   createdAt: {
-    type: Date,
+    type: Number,
     required: true,
   },
   createdBy: {
@@ -49,7 +49,7 @@ export default {
     required: true,
   },
   lastUpdatedAt: {
-    type: Date,
+    type: Number,
     required: true,
   },
   lastUpdatedBy: {

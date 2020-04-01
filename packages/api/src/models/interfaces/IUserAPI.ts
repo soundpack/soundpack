@@ -9,7 +9,7 @@ export default interface IUserAPI {
   register(request: IRegisterUserRequest): Promise<IRegisterUserResponse>
   login(request: ILoginUserRequest): Promise<ILoginUserResponse>
   sendPasswordReset(request: ISendUserPasswordResetRequest): Promise<ISendUserPasswordResetResponse>
-  // resetPassword(request: IResetUserPasswordRequest): Promise<IResetUserPasswordResponse>
+  resetPassword(request: IResetUserPasswordRequest): Promise<IResetUserPasswordResponse>
   get(request: IGetUserRequest): Promise<IGetUserResponse>
   // update(request: IUpdateUserRequest): Promise<IUpdateUserResponse>
 }
@@ -47,7 +47,7 @@ export interface ISendUserPasswordResetRequest extends IRequest {
 export interface ISendUserPasswordResetResponse extends IResponse {}
 
 export interface IResetUserPasswordRequest extends IRequest {
-  code: string;
+  resetPasswordCode: string;
   password: string;
 }
 

@@ -1,8 +1,8 @@
-export default interface IOrg {
+export default interface IOrganization {
   _id?: string;
   userId?: string;
-  createdAt?: Date;
-  lastUpdatedAt?: Date;
+  createdAt?: number;
+  lastUpdatedAt?: number;
   active?: boolean;
   name: string;
   description?: string;

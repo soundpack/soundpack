@@ -78,7 +78,7 @@ export default class OrganizationController implements IOrganizationAPI {
     /**
     * Save the organization to storage
     */
-    const now = new Date();
+    const now = Date.now();
     organization.createdAt = now;
     organization.lastUpdatedAt = now;
 
@@ -119,7 +119,7 @@ export default class OrganizationController implements IOrganizationAPI {
       return response;
     }
 
-    organization.lastUpdatedAt = new Date();
+    organization.lastUpdatedAt = Date.now();
 
     try {
       const newOrg = await this.storage.update(userId, organization);

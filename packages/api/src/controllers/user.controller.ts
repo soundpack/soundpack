@@ -19,6 +19,8 @@ import IUserAPI, {
   IGetUserResponse,
   ISendUserPasswordResetRequest,
   ISendUserPasswordResetResponse,
+  IResetUserPasswordRequest,
+  IResetUserPasswordResponse,
 } from 'src/models/interfaces/IUserAPI';
 import { ISendUserPasswordResetEmailRequest } from 'src/models/interfaces/IEmailService';
 
@@ -92,7 +94,7 @@ export default class UserController implements IUserAPI {
       lastName,
       phoneNumber,
       createdAt: Date.now(),
-      organizationId: null,
+      organizationId: null
     };
 
     let user: IUser;
@@ -224,6 +226,7 @@ export default class UserController implements IUserAPI {
 
     return response;
   }
+
   public sendPasswordReset = async (request: ISendUserPasswordResetRequest): Promise<ISendUserPasswordResetResponse> => {
     let response: ISendUserPasswordResetResponse = { status: StatusCodeEnum.UNKNOWN_CODE };
 
@@ -243,17 +246,15 @@ export default class UserController implements IUserAPI {
       return response;
     }
 
-    const forgotPasswordCode = uuid4();
+    const resetPasswordCode = uuid4();
 
     try {
-      const user: IUser = await this.storage.forgotPassword(email, forgotPasswordCode);
-
-      console.log(user);
+      const user: IUser = await this.storage.setResetPasswordCode(email, resetPasswordCode);
 
       if(user) {
         const sendEmailRequest: ISendUserPasswordResetEmailRequest = {
           toAddress: user.email,
-          resetPasswordUrl: `http://localhost:3000/reset-password?code=${forgotPasswordCode}`
+          resetPasswordUrl: `http://localhost:3000/reset-password?code=${resetPasswordCode}`
         };
 
         await this.controller.email.sendUserPasswordResetEmail(sendEmailRequest);
@@ -267,6 +268,47 @@ export default class UserController implements IUserAPI {
     }
 
     response.status = StatusCodeEnum.OK;
+    return response;
+  }
+
+   public resetPassword = async (request: IResetUserPasswordRequest): Promise<IResetUserPasswordResponse> => {
+    let response: IResetUserPasswordResponse = { status: StatusCodeEnum.UNKNOWN_CODE };
+
+    const schema = Joi.object().keys({
+      resetPasswordCode: Joi.string().required(),
+      password: Joi.string().required()
+    });
+
+    const params = Joi.validate(request, schema);
+    const { resetPasswordCode, password }: IResetUserPasswordRequest  = params.value;
+
+    if (params.error) {
+      console.error(params.error);
+      response = {
+        status: StatusCodeEnum.UNPROCESSABLE_ENTITY,
+        error: toError(params.error.details[0].message),
+      };
+      return response;
+    }
+
+    let user: IUser;
+    try {
+      user = await this.storage.resetPassword(resetPasswordCode, password);
+
+      if(!user) {
+        throw new Error('Invalid Code.');
+      }
+
+    } catch (e) {
+      console.error(e);
+      response.error = toError(e.message);
+      response.status = StatusCodeEnum.INTERNAL_SERVER_ERROR;      
+      return response;
+    }
+
+    response.status = StatusCodeEnum.OK;
+    response.user = user;
+    response.token = this.generateJWT(user);
     return response;
   }
 

@@ -8,4 +8,6 @@ export default interface IUser {
   passwordHash?: string;
   createdAt?: number;
   organizationId: string | null;
+  resetPasswordCode?: string | null;
+  resetPasswordCodeSetAt?: number;
 }

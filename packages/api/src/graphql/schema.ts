@@ -69,7 +69,7 @@ const schema = gql`
   ######################################################################
   # Miscellaneous
   ######################################################################
-  
+
   type File {
     filename: String!
     mimetype: String!
@@ -94,11 +94,12 @@ const schema = gql`
     register(user: UserInput!): Authentication
     login(email: String!, password: String!): Authentication
     sendPasswordReset(email: String!): Boolean
+    resetPassword(resetPasswordCode: String!, password: String!): Authentication
 
     # Organization
     updateOrganization(organization: OrgInput!): Organization
-    deleteOrganization(organizationId: String!): Boolean    
-   
+    deleteOrganization(organizationId: String!): Boolean
+
     # Miscellaneous
     uploadFiles(files: [Upload!]!): [File!]!
   }

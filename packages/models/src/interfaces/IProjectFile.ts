@@ -8,8 +8,8 @@ export default interface IProject {
   audioUrl?: string;
   textUrl?: string;
   text?: string;
-  createdAt?: Date;
+  createdAt?: number;
   createdBy?: string;
-  lastUpdatedAt?: Date;
+  lastlastUpdatedAt?: number;
   lastUpdatedBy?: string;
 }
