@@ -14,7 +14,7 @@ export default {
     type:  Date,
     required: false,
   },
-  updatedAt: {
+  lastUpdatedAt: {
     type: Date,
     required: false,
   },

@@ -48,7 +48,7 @@ const schema = gql`
     userId: String
     user: User
     createdAt: GraphQLDateTime
-    updatedAt: GraphQLDateTime
+    lastUpdatedAt: GraphQLDateTime
     active: Boolean
     name: String
     description: String

@@ -1,23 +1,23 @@
 import Joi from 'joi';
-import OrganizationStore from '../stores/organization.store';
+import ProjectStore from '../stores/project.store';
 import {
   toError,
   StatusCodeEnum,
   joiToError,
 } from '../models/interfaces/common';
-import IOrganization from '@soundpack/models/.dist/interfaces/IOrganization';
-import IOrganizationAPI, {
-  ICreateOrgRequest,
-  ICreateOrgResponse,
-  IUpdateOrgRequest,
-  IUpdateOrgResponse,
-  IListOrgsRequest,
-  IListOrgsResponse,
-  IGetOrgRequest,
-  IGetOrgResponse,
-  IDeleteOrgRequest,
-  IDeleteOrgResponse,
-} from '../models/interfaces/IOrganizationAPI';
+import IProject from '@soundpack/models/.dist/interfaces/IProject';
+import IProjectAPI, {
+  ICreateProjectRequest,
+  ICreateProjectResponse,
+  IUpdateProjectRequest,
+  IUpdateProjectResponse,
+  IListProjectsRequest,
+  IListProjectsResponse,
+  IGetProjectRequest,
+  IGetProjectResponse,
+  IDeleteProjectRequest,
+  IDeleteProjectResponse,
+} from '../models/interfaces/IProjectAPI';
 import { IController } from './controller';
 
 const orgSchema = Joi.object().keys({
@@ -46,8 +46,8 @@ const authenticatedSchema = Joi.object().keys({
   userId: Joi.string().required(),
 })
 
-export default class OrganizationController implements IOrganizationAPI {
-  private storage = new OrganizationStore();
+export default class ProjectController implements IProjectAPI {
+  private storage = new ProjectStore();
   private controller;
 
   constructor(controller: IController) {
@@ -55,16 +55,16 @@ export default class OrganizationController implements IOrganizationAPI {
     console.log(this.controller);
   }
 
-  public create = async (request: ICreateOrgRequest): Promise<ICreateOrgResponse> => {
-    let response: ICreateOrgResponse;
+  public create = async (request: ICreateProjectRequest): Promise<ICreateProjectResponse> => {
+    let response: ICreateProjectResponse;
 
     const schema = Joi.object().keys({
       auth: authenticatedSchema,
-      organization: orgSchema,
+      project: orgSchema,
     });
 
     const params = Joi.validate(request, schema);
-    const {  organization }: { organization: IOrganization } = params.value;
+    const {  project }: { project: IProject } = params.value;
 
     if (params.error) {
       console.error(params.error);
@@ -76,17 +76,17 @@ export default class OrganizationController implements IOrganizationAPI {
     }
 
     /**
-    * Save the organization to storage
+    * Save the project to storage
     */
     const now = new Date();
-    organization.createdAt = now;
-    organization.lastUpdatedAt = now;
+    project.createdAt = now;
+    project.lastUpdatedAt = now;
 
     try {
-      const newOrg = await this.storage.create(organization);
+      const newProject = await this.storage.create(project);
       response = {
         status: StatusCodeEnum.OK,
-        organization: newOrg
+        project: newProject
       };
       return response;
     } catch (e) {
@@ -99,8 +99,8 @@ export default class OrganizationController implements IOrganizationAPI {
     }
   }
 
-  public update = async (request: IUpdateOrgRequest): Promise<IUpdateOrgResponse> => {
-    let response: IUpdateOrgResponse;
+  public update = async (request: IUpdateProjectRequest): Promise<IUpdateProjectResponse> => {
+    let response: IUpdateProjectResponse;
 
     const schema = Joi.object().keys({
       userId: Joi.string().required(),
@@ -108,7 +108,7 @@ export default class OrganizationController implements IOrganizationAPI {
     });
 
     const params = Joi.validate(request, schema);
-    const { userId, organization }: { userId: string, organization: IOrganization } = params.value;
+    const { userId, project }: { userId: string, project: IProject } = params.value;
 
     if (params.error) {
       console.error(params.error);
@@ -119,13 +119,13 @@ export default class OrganizationController implements IOrganizationAPI {
       return response;
     }
 
-    organization.lastUpdatedAt = new Date();
+    project.lastUpdatedAt = new Date();
 
     try {
-      const newOrg = await this.storage.update(userId, organization);
+      const newProject = await this.storage.update(userId, project);
       response = {
         status: StatusCodeEnum.OK,
-        organization: newOrg
+        project: newProject
       };
       return response;
     } catch (e) {
@@ -138,8 +138,8 @@ export default class OrganizationController implements IOrganizationAPI {
     }
   }
 
-  public list = async (request: IListOrgsRequest): Promise<IListOrgsResponse> => {
-    let response: IListOrgsResponse;
+  public list = async (request: IListProjectsRequest): Promise<IListProjectsResponse> => {
+    let response: IListProjectsResponse;
 
     const schema = Joi.object().keys({
       userId: Joi.string().optional(),
@@ -158,10 +158,10 @@ export default class OrganizationController implements IOrganizationAPI {
     }
 
     try {
-      const organizations = await this.storage.list(userId || null);
+      const projects = await this.storage.list(userId || null);
       response = {
         status: StatusCodeEnum.OK,
-        organizations,
+        projects,
       };
       return response;
     } catch (e) {
@@ -174,15 +174,15 @@ export default class OrganizationController implements IOrganizationAPI {
     }
   }
 
-  public get = async (request: IGetOrgRequest): Promise<IGetOrgResponse> => {
-    let response: IGetOrgResponse;
+  public get = async (request: IGetProjectRequest): Promise<IGetProjectResponse> => {
+    let response: IGetProjectResponse;
 
     const schema = Joi.object().keys({
-      organizationId: Joi.string().allow(null).required(),
+      projectId: Joi.string().allow(null).required(),
     });
 
     const params = Joi.validate(request, schema);
-    const { organizationId }: { organizationId: string } = params.value;
+    const { projectId }: { projectId: string } = params.value;
 
     if (params.error) {
       console.error(params.error);
@@ -194,10 +194,10 @@ export default class OrganizationController implements IOrganizationAPI {
     }
 
     try {
-      const organization = await this.storage.get(organizationId);
+      const project = await this.storage.get(projectId);
       response = {
         status: StatusCodeEnum.OK,
-        organization,
+        project,
       };
       return response;
     } catch (e) {
@@ -210,16 +210,16 @@ export default class OrganizationController implements IOrganizationAPI {
     }
   }
 
-  public delete = async (request: IDeleteOrgRequest): Promise<IDeleteOrgResponse> => {
-    let response: IDeleteOrgResponse;
+  public delete = async (request: IDeleteProjectRequest): Promise<IDeleteProjectResponse> => {
+    let response: IDeleteProjectResponse;
 
     const schema = Joi.object().keys({
       userId: Joi.string().required(),
-      organizationId: Joi.string().required(),
+      projectId: Joi.string().required(),
     });
 
     const params = Joi.validate(request, schema);
-    const { userId, organizationId }: { userId: string, organizationId: string } = params.value;
+    const { userId, projectId }: { userId: string, projectId: string } = params.value;
 
     if (params.error) {
       console.error(params.error);
@@ -232,7 +232,7 @@ export default class OrganizationController implements IOrganizationAPI {
     }
 
     try {
-      const deleted = await this.storage.delete(userId, organizationId);
+      const deleted = await this.storage.delete(userId, projectId);
       response = {
         status: StatusCodeEnum.OK,
         deleted,
