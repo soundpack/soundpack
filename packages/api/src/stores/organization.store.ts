@@ -1,7 +1,14 @@
+import { Document, Schema, Model, model } from 'mongoose';
 import IOrganization from '@soundpack/models/.dist/interfaces/IOrganization';
-import Organization from '../models/schemas/Organization';
+import OrganizationMongo from '@soundpack/models/.dist/mongo/Organization.mongo';
 
-export default class OrgStore {
+export interface IOrganizationModel extends IOrganization, Document {
+  _id: string,
+}
+export const OrganizationSchema = new Schema(OrganizationMongo);
+export const Organization: Model<IOrganizationModel> = model<IOrganizationModel>('Organization', OrganizationSchema);
+
+export default class OrganizationStore {
   public static OPERATION_UNSUCCESSFUL = class extends Error {
     constructor() {
       super('An error occured while processing the request.');
@@ -14,7 +21,7 @@ export default class OrgStore {
       return await org.save();
     } catch (e) {
       console.error(e);
-      return Promise.reject(new OrgStore.OPERATION_UNSUCCESSFUL());
+      return Promise.reject(new OrganizationStore.OPERATION_UNSUCCESSFUL());
     }
   }
 
@@ -33,7 +40,7 @@ export default class OrgStore {
       });
     } catch (e) {
       console.error(e);
-      return Promise.reject(new OrgStore.OPERATION_UNSUCCESSFUL());
+      return Promise.reject(new OrganizationStore.OPERATION_UNSUCCESSFUL());
     }
   }
 
@@ -42,7 +49,7 @@ export default class OrgStore {
       return await Organization.find(userId ? { userId } : null);
     } catch (e) {
       console.error(e);
-      return Promise.reject(new OrgStore.OPERATION_UNSUCCESSFUL());
+      return Promise.reject(new OrganizationStore.OPERATION_UNSUCCESSFUL());
     }
   }
 
@@ -51,7 +58,7 @@ export default class OrgStore {
       return await Organization.findById(organizationId);
     } catch (e) {
       console.error(e);
-      return Promise.reject(new OrgStore.OPERATION_UNSUCCESSFUL());
+      return Promise.reject(new OrganizationStore.OPERATION_UNSUCCESSFUL());
     }
   }
   
@@ -73,7 +80,7 @@ export default class OrgStore {
         });
     } catch (e) {
       console.error(e);
-      return Promise.reject(new OrgStore.OPERATION_UNSUCCESSFUL());
+      return Promise.reject(new OrganizationStore.OPERATION_UNSUCCESSFUL());
     }
     return !org.active;
   }

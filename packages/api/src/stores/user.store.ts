@@ -1,8 +1,15 @@
-import IUser from '@soundpack/models/.dist/interfaces/IUser';
-import User from '../models/schemas/User';
 import Joi from 'joi';
 import bcrypt from 'bcrypt';
 import { UpdateWriteOpResult } from 'mongodb';
+import { Document, Schema, Model, model } from 'mongoose';
+import IUser from '@soundpack/models/.dist/interfaces/IUser';
+import UserMongo from '@soundpack/models/.dist/mongo/User.mongo';
+
+export interface IUserModel extends IUser, Document {
+  _id: string,
+}
+export const UserSchema = new Schema(UserMongo);
+export const User: Model<IUserModel> = model<IUserModel>('User', UserSchema);
 
 export default class UserStore {
   public static OPERATION_UNSUCCESSFUL = class extends Error {
