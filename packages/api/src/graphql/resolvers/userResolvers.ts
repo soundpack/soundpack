@@ -1,4 +1,4 @@
-import { StatusCodeEnum } from '../../interfaces/common';
+import StatusCodeEnum from '../../models/enums/StatusCodeEnum';
 import {
   ApolloError,
 } from 'apollo-server-express';
@@ -6,11 +6,11 @@ import controller from '../../controllers/controller';
 import {
   IGetUserRequest, 
   IGetUserResponse,
-  IRegisterRequest,
-  IRegisterResponse,
-  ILoginRequest,
-  ILoginResponse,
-} from '../../interfaces/IUser';
+  IRegisterUserRequest,
+  IRegisterUserResponse,
+  ILoginUserRequest,
+  ILoginUserResponse,
+} from '../../models/interfaces/IUserAPI';
 
 export default { 
   Query: {
@@ -18,7 +18,9 @@ export default {
       const { userId } = parent;
 
       const request: IGetUserRequest = {
-        userId,
+        auth: {
+          userId,
+        }
       }
 
       let response: IGetUserResponse;
@@ -41,7 +43,7 @@ export default {
     async register(parent, args, context) {
       const { user: { firstName, lastName, email, phoneNumber, password } } = args;
 
-      const request: IRegisterRequest = {
+      const request: IRegisterUserRequest = {
         firstName,
         lastName,
         email,
@@ -49,7 +51,7 @@ export default {
         password,
       }
 
-      let response: IRegisterResponse;
+      let response: IRegisterUserResponse;
 
       try {
         response = await controller.user.register(request);
@@ -67,12 +69,12 @@ export default {
     async login(parent, args, context) {
       const { email, password } = args;
 
-      const request: ILoginRequest = {
+      const request: ILoginUserRequest = {
         email,
         password,
       }
 
-      let response: ILoginResponse;
+      let response: ILoginUserResponse;
 
       try {
         response = await controller.user.login(request);

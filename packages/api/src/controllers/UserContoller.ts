@@ -16,8 +16,6 @@ import IUserAPI, {
   ILoginUserResponse,
   IGetUserRequest,
   IGetUserResponse,
-  IUpdateUserRequest,
-  IUpdateUserResponse,
 } from 'src/models/interfaces/IUserAPI';
 
 export default class UserController implements IUserAPI{
@@ -30,7 +28,7 @@ export default class UserController implements IUserAPI{
   }
 
   private generateJWT = (user: IUser): string => {
-    return jwt.sign({ _id: user._id, email: user.email, orgId: user.orgId }, JWT_SECRET);
+    return jwt.sign({ _id: user._id, email: user.email, organizationId: user.organizationId }, JWT_SECRET);
   }
   
   public register = async (request: IRegisterUserRequest): Promise<IRegisterUserResponse> => {
@@ -92,6 +90,7 @@ export default class UserController implements IUserAPI{
       lastName,
       phoneNumber,
       createdAt: Date.now(),
+      organizationId: null,
     };
 
     let user: IUser;
@@ -108,24 +107,24 @@ export default class UserController implements IUserAPI{
 
     /**
     * Create an org for the user
-    * and set the orgId on the user
+    * and set the organizationId on the user
     */
     try {
       const request: ICreateOrgRequest = {
         auth: {
           userId: user._id,
         },
-        org: {
-          name: `${firstName} ${lastName}'s Ranch`,
-          email,
-          phoneNumber,
+        organization: {
+          name: `${firstName} ${lastName}'s Team`,
+          email: email,
+          phoneNumber: phoneNumber,
           address: '',
-          description: `${firstName}'s cattle ranch`,
+          description: `${firstName} ${lastName}'s Team`,
         },
       }
 
-      const { org }: { org: IOrganization} = await this.controller.org.create(request);
-      user = await this.storage.setOrgId(user._id, org._id);
+      const { organization }: { organization: IOrganization} = await this.controller.organization.create(request);
+      user = await this.storage.setOrganizationId(user._id, organization._id);
       
     } catch (e) {
       console.error(e);

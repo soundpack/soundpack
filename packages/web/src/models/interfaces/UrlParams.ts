@@ -3,7 +3,7 @@ export default interface UrlParams {
   orderId?: string;
   venueId?: string;
   artistId?: string;
-  orgId?: string;
+  organizationId?: string;
   customerId?: string;
   roleId?: string;
   chartKey?: string;

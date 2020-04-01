@@ -1,5 +1,5 @@
-import { StatusCodeEnum } from '../../interfaces/common';
-import IFile  from '../../interfaces/IFile';
+import StatusCodeEnum from '../../models/enums/StatusCodeEnum';
+import IFile  from '../../models/interfaces/IFile';
 import {
   ApolloError,
   AuthenticationError,

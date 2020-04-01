@@ -22,7 +22,7 @@ const schema = gql`
     email: String
     phoneNumber: String
     createdAt: Float
-    orgId: String
+    organizationId: String
     organization: Organization
   }
 
@@ -40,7 +40,7 @@ const schema = gql`
   }
 
   ######################################################################
-  # Listing
+  # Organization
   ######################################################################
 
   type Organization {
@@ -85,12 +85,8 @@ const schema = gql`
     # User
     user: User
 
-    # Listing
-    listing(listingId: String!): Listing
-    listings(orgId: String): [Listing]
-
     # Org
-    org(orgId: String): Organization
+    org(organizationId: String): Organization
   }
 
   type Mutation {
@@ -98,15 +94,9 @@ const schema = gql`
     register(user: UserInput!): Authentication
     login(email: String!, password: String!): Authentication
 
-    # Listing
-    createListing(listing: ListingInput!): Listing
-    updateListing(listing: ListingInput!): Listing
-    deleteListing(listingId: String!): Boolean    
-
-
     # Org
     updateOrg(org: OrgInput!): Organization
-    deleteOrg(orgId: String!): Boolean    
+    deleteOrg(organizationId: String!): Boolean    
    
     # Miscellaneous
     uploadFiles(files: [Upload!]!): [File!]!
@@ -124,7 +114,7 @@ export const executableSchema = makeExecutableSchema({
     Upload: GraphQLUpload,
     GraphQLDateTime: GraphQLDateTime,
     User: {
-      organization: (user, args, context) => organizationResolvers.Query.org(null, { orgId: user.orgId }, context),
+      organization: (user, args, context) => organizationResolvers.Query.org(null, { organizationId: user.organizationId }, context),
     },
     Organization: {
       user: (org, args, context) => userResolvers.Query.user(org, null, context),

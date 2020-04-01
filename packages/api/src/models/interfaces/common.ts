@@ -13,7 +13,7 @@ export interface IAuthenticationData {
 }
 
 export interface IAuthorizationData extends IAuthenticationData {
-  orgId: string;
+  organizationId: string;
 }
 
 export interface IAuthenticatedRequest extends IRequest {

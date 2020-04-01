@@ -65,10 +65,10 @@ export default class UserStore {
 
     return savedUser;
   }
-  public async setOrgId(userId: string, orgId: string): Promise<IUser> {
+  public async setOrganizationId(userId: string, organizationId: string): Promise<IUser> {
     let user: IUser;
     try {
-      user = await User.findOneAndUpdate({ _id: userId }, { $set: { orgId } }, { new: true });
+      user = await User.findOneAndUpdate({ _id: userId }, { $set: { organizationId } }, { new: true });
     } catch (e) {
       return Promise.reject(new UserStore.OPERATION_UNSUCCESSFUL());
     }

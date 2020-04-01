@@ -37,7 +37,7 @@ export const UserSchema  = new Schema({
     type: String,
     required: false,
   },
-  orgId: {
+  organizationId: {
     type: String,
     required: false,
   },

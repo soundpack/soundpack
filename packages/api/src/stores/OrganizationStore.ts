@@ -46,22 +46,22 @@ export default class OrgStore {
     }
   }
 
-  public async get(orgId: string): Promise<IOrganization> {
+  public async get(organizationId: string): Promise<IOrganization> {
     try {
-      return await Organization.findById(orgId);
+      return await Organization.findById(organizationId);
     } catch (e) {
       console.error(e);
       return Promise.reject(new OrgStore.OPERATION_UNSUCCESSFUL());
     }
   }
   
-  public async delete(userId: string, orgId: string): Promise<boolean> {
+  public async delete(userId: string, organizationId: string): Promise<boolean> {
     let org: IOrganization;
     try {
       org = await Organization.findOneAndUpdate(
         {
           userId: userId,
-          _id: orgId
+          _id: organizationId
         },
         {
           $set: {

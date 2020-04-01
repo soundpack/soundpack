@@ -3,6 +3,7 @@ import {
   IRequest,
   IResponse,
   IAuthenticatedRequest,
+  IAuthorizedRequest,
   IDeleteResponse,
 } from './common';
 
@@ -19,23 +20,23 @@ export default interface IOrganizationAPI {
 ********************************************************************************/
 
 export interface ICreateOrgRequest extends IAuthenticatedRequest {
-  org: IOrganization;
+  organization: IOrganization;
 }
 
 export interface ICreateOrgResponse extends IResponse {
-  org?: IOrganization;
+  organization?: IOrganization;
 }
 
 /********************************************************************************
 *  Update Organzation
 ********************************************************************************/
 
-export interface IUpdateOrgRequest extends IAuthenticatedRequest {
-  org: IOrganization;
+export interface IUpdateOrgRequest extends IAuthorizedRequest {
+  organization: IOrganization;
 }
 
 export interface IUpdateOrgResponse extends IResponse {
-  org?: IOrganization;
+  organization?: IOrganization;
 }
 
 /********************************************************************************
@@ -47,27 +48,27 @@ export interface IListOrgsRequest extends IRequest {
 }
 
 export interface IListOrgsResponse extends IResponse {
-  orgs?: IOrganization[];
+  organizations?: IOrganization[];
 }
 
 /********************************************************************************
 *  Get Organzation
 ********************************************************************************/
 
-export interface IGetOrgRequest extends IAuthenticatedRequest {
-  orgId: string;
+export interface IGetOrgRequest extends IAuthorizedRequest {
+  organizationId: string;
 }
 
 export interface IGetOrgResponse extends IResponse {
-  org?: IOrganization;
+  organization?: IOrganization;
 }
 
 /********************************************************************************
 *  Delete Organzation
 ********************************************************************************/
 
-export interface IDeleteOrgRequest extends IAuthenticatedRequest {
-  orgId: string;
+export interface IDeleteOrgRequest extends IAuthorizedRequest {
+  organizationId: string;
 }
 
 export interface IDeleteOrgResponse extends IDeleteResponse {}

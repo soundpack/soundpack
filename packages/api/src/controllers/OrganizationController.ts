@@ -1,7 +1,6 @@
 import Joi from 'joi';
 import OrganizationStore from '../stores/OrganizationStore';
 import {
-  IResourceAPI,
   toError,
   StatusCodeEnum,
   joiToError,
@@ -57,11 +56,11 @@ export default class OrganizationController implements IOrganizationAPI {
 
     const schema = Joi.object().keys({
       userId: Joi.string().required(),
-      org: orgSchema,
+      organization: orgSchema,
     });
 
     const params = Joi.validate(request, schema);
-    const { userId, org }: { userId: string, org: IOrganization } = params.value;
+    const { userId, organization }: { userId: string, organization: IOrganization } = params.value;
 
     if (params.error) {
       console.error(params.error);
@@ -73,18 +72,18 @@ export default class OrganizationController implements IOrganizationAPI {
     }
 
     /**
-    * Save the org to storage
+    * Save the organization to storage
     */
     const now = new Date();
-    org.userId = userId;
-    org.createdAt = now;
-    org.updatedAt = now;
+    organization.userId = userId;
+    organization.createdAt = now;
+    organization.updatedAt = now;
 
     try {
-      const newOrg = await this.storage.create(org);
+      const newOrg = await this.storage.create(organization);
       response = {
         status: StatusCodeEnum.OK,
-        org: newOrg
+        organization: newOrg
       };
       return response;
     } catch (e) {
@@ -106,7 +105,7 @@ export default class OrganizationController implements IOrganizationAPI {
     });
 
     const params = Joi.validate(request, schema);
-    const { userId, org }: { userId: string, org: IOrganization } = params.value;
+    const { userId, organization }: { userId: string, organization: IOrganization } = params.value;
 
     if (params.error) {
       console.error(params.error);
@@ -117,13 +116,13 @@ export default class OrganizationController implements IOrganizationAPI {
       return response;
     }
 
-    org.updatedAt = new Date();
+    organization.updatedAt = new Date();
 
     try {
-      const newOrg = await this.storage.update(userId, org);
+      const newOrg = await this.storage.update(userId, organization);
       response = {
         status: StatusCodeEnum.OK,
-        org: newOrg
+        organization: newOrg
       };
       return response;
     } catch (e) {
@@ -156,10 +155,10 @@ export default class OrganizationController implements IOrganizationAPI {
     }
 
     try {
-      const orgs = await this.storage.list(userId || null);
+      const organizations = await this.storage.list(userId || null);
       response = {
         status: StatusCodeEnum.OK,
-        orgs,
+        organizations,
       };
       return response;
     } catch (e) {
@@ -176,13 +175,11 @@ export default class OrganizationController implements IOrganizationAPI {
     let response: IGetOrgResponse;
 
     const schema = Joi.object().keys({
-      orgId: Joi.string().allow(null).required(),
+      organizationId: Joi.string().allow(null).required(),
     });
 
-
-
     const params = Joi.validate(request, schema);
-    const { orgId }: { orgId: string } = params.value;
+    const { organizationId }: { organizationId: string } = params.value;
 
     if (params.error) {
       console.error(params.error);
@@ -194,10 +191,10 @@ export default class OrganizationController implements IOrganizationAPI {
     }
 
     try {
-      const org = await this.storage.get(orgId);
+      const organization = await this.storage.get(organizationId);
       response = {
         status: StatusCodeEnum.OK,
-        org,
+        organization,
       };
       return response;
     } catch (e) {
@@ -215,11 +212,11 @@ export default class OrganizationController implements IOrganizationAPI {
 
     const schema = Joi.object().keys({
       userId: Joi.string().required(),
-      orgId: Joi.string().required(),
+      organizationId: Joi.string().required(),
     });
 
     const params = Joi.validate(request, schema);
-    const { userId, orgId }: { userId: string, orgId: string } = params.value;
+    const { userId, organizationId }: { userId: string, organizationId: string } = params.value;
 
     if (params.error) {
       console.error(params.error);
@@ -232,7 +229,7 @@ export default class OrganizationController implements IOrganizationAPI {
     }
 
     try {
-      const deleted = await this.storage.delete(userId, orgId);
+      const deleted = await this.storage.delete(userId, organizationId);
       response = {
         status: StatusCodeEnum.OK,
         deleted,

@@ -1,4 +1,4 @@
-import IFile from '../interfaces/IFile';
+import IFile from '../models/interfaces/IFile';
 import { Storage } from '@google-cloud/storage';
 import { Duplex } from 'stream';
 import {

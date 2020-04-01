@@ -7,5 +7,5 @@ export default interface IUser {
   password?: string;
   passwordHash?: string;
   createdAt?: number;
-  orgId?: string;
+  organizationId: string | null;
 }

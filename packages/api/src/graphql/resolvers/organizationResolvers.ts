@@ -1,3 +1,4 @@
+import IUser from '@soundpack/models/.dist/interfaces/IUser';
 import StatusCodeEnum from '../../models/enums/StatusCodeEnum';
 import {
   ApolloError,
@@ -16,14 +17,14 @@ import {
 export default {
   Query: { 
     async org(parent, args, context) {
-      const { req: { user } } = context;
+      const { req: { user } }: { req: { user: IUser } } = context;
 
       const request: IGetOrgRequest = {
         auth: {
           userId: user._id,
-          orgId: user.orgId,
-        }
-        
+          organizationId: user.organizationId,
+        },
+        organizationId: args.organizationId,
       }
 
       let response: IGetOrgResponse;
@@ -39,27 +40,27 @@ export default {
         throw e;
       }
 
-      return response.org;
+      return response.organization;
     },
   },
   Mutation: {
     async updateOrg(parent, args, context) {
-      let { org } = args;
-      const { req: { user: { userId, orgId} } } = context;
+      const { req: { user } }: { req: { user: IUser } } = context;
 
-      if (!userId) {
+      if (!user._id) {
         throw new AuthenticationError("Authentication Required.");
       }
 
-      if(!orgId) {
+      if(!user.organizationId) {
         throw new AuthenticationError("Authorization Required."); 
       }
 
-      org._id = orgId;
-
       const request: IUpdateOrgRequest = {
-        userId,
-        org,
+        auth: {
+          userId: user._id,
+          organizationId: user.organizationId,
+        },
+        organization: args.org,
       }
 
       let response: IUpdateOrgResponse;
@@ -75,21 +76,25 @@ export default {
         throw e;
       }
 
-      console.log(response.org);
-
-      return response.org;
+      return response.organization;
     },
     async deleteOrg(parent, args, context) {
-      const { orgId } = args;
-      const { req: { user: { userId } } } = context;
+      const { req: { user } }: { req: { user: IUser } } = context;
 
-      if (!userId) {
+      if (!user._id) {
         throw new AuthenticationError("Authentication Required.");
       }
 
+      if (!user.organizationId) {
+        throw new AuthenticationError("Authorization Required.");
+      }
+
       const request: IDeleteOrgRequest = {
-        userId,
-        orgId,
+        auth: {
+          userId: user._id,
+          organizationId: user.organizationId,
+        },
+        organizationId: args.organizationId,
       }
 
       let response: IDeleteOrgResponse;

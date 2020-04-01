@@ -26,7 +26,7 @@ export default function authenticate(req, res, next) {
       req.user = {
         userId: data._id ? data._id.toString() : null,
         userEmail: data.email ? data.email.toString() : null,
-        orgId: data.orgId ? data.orgId.toString() : null,
+        organizationId: data.organizationId ? data.organizationId.toString() : null,
       };
     }
 
