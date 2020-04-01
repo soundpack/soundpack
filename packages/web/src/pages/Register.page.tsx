@@ -148,6 +148,7 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
       return;
     }
 
+    setError('');
     registerMutation();
   }
 

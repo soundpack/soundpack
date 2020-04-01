@@ -2,9 +2,9 @@ import Joi from 'joi';
 import OrganizationStore from '../stores/organization.store';
 import {
   toError,
-  StatusCodeEnum,
   joiToError,
 } from '../models/interfaces/common';
+import StatusCodeEnum from "../models/enums/StatusCodeEnum";
 import IOrganization from '@soundpack/models/.dist/interfaces/IOrganization';
 import IOrganizationAPI, {
   ICreateOrgRequest,

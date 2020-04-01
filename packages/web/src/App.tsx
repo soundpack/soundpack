@@ -78,7 +78,7 @@ export default function App() {
   
   return (
     <Fragment>
-      <PageLoader />
+      {/* <PageLoader /> */}
       <Container>
         <Switch>
           <Route path="/login" component={Login} />

@@ -4,7 +4,7 @@ import Joi from "@hapi/joi";
 import Button, { ButtonTypes } from "../elements/Button";
 import LabeledInput from "../elements/LabeledInput";
 import Link from "../elements/Link";
-import FORGOT_PASSWORD from "../graphql/mutations/forgotPassword";
+import SEND_PASSWORD_RESET from "../graphql/mutations/sendPasswordReset";
 import * as Auth from "../utils/Auth";
 import * as Schema from "../utils/Schema";
 import * as ErrorUtil from "../utils/ErrorUtil";
@@ -14,6 +14,7 @@ import AuthLayout, {
   Row,
   Text,
   Footer,
+  SuccessText,
   ErrorText
 } from "../components/AuthLayout";
 
@@ -34,7 +35,7 @@ type ForgotPasswordPageProps = {};
 
 const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = () => {
   const [email, setEmail] = useState("");
-
+  const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrorsInternal] = useState({
     email: null,
@@ -55,12 +56,12 @@ const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = () => {
   });
 
 
-  const [forgotPasswordMutation, { loading }] = useMutation(FORGOT_PASSWORD, {
+  const [forgotPasswordMutation, { loading }] = useMutation(SEND_PASSWORD_RESET, {
     variables: {
       email,
     },
-    onCompleted: async ({ forgotPassword: { token } }) => {
-      await Auth.setToken(token);
+    onCompleted: () => {
+      setSuccess(true);
     },
     onError: async error => {
       const errorMsg = ErrorUtil.getErrorMessage(error);
@@ -73,10 +74,7 @@ const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = () => {
       event.preventDefault();
     }
 
-    const params = schema.validate({
-      email,
-    });
-
+    const params = schema.validate({ email });
     const { error: schemaError } = params;
 
     if (schemaError) {
@@ -84,7 +82,8 @@ const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = () => {
       setFieldErrors(field, message);
       return;
     }
-
+    
+    setError('');
     forgotPasswordMutation();
   };
 
@@ -104,6 +103,7 @@ const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = () => {
             error={fieldErrors["email"]}
           />
         </Row>
+        {success && <SuccessText>A password reset email has been sent.</SuccessText>}
         {error && <ErrorText>{error}</ErrorText>}
         <Button
           type={ButtonTypes.Submit}

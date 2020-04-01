@@ -101,6 +101,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
       return;
     }
 
+    setError('');
     loginMutation();
   };
 

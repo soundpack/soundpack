@@ -93,6 +93,7 @@ const schema = gql`
     # User
     register(user: UserInput!): Authentication
     login(email: String!, password: String!): Authentication
+    sendPasswordReset(email: String!): Boolean
 
     # Organization
     updateOrganization(organization: OrgInput!): Organization

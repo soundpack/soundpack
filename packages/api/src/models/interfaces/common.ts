@@ -1,12 +1,11 @@
-export interface IRequest {
+import StatusCodeEnum from './../enums/StatusCodeEnum';
 
-}
+export interface IRequest {}
 
 export interface IResponse {
   status: StatusCodeEnum;
   error?: IError;
 }
-
 
 export interface IAuthenticationData {
   userId: string;
@@ -39,19 +38,6 @@ export interface IResourceAPI {
   get(request: IAuthenticatedRequest): Promise<IResponse>;
   delete(request: IAuthenticatedRequest): Promise<IDeleteResponse>;
 }
-
-export enum StatusCodeEnum {
-  UNKNOWN_CODE = 0,
-  OK = 200,
-  BAD_REQUEST = 400,
-  UNAUTHORIZED = 401,
-  FORBIDDEN = 403,
-  NOT_FOUND = 404,
-  UNPROCESSABLE_ENTITY = 422,
-  INTERNAL_SERVER_ERROR = 500,
-  GATEWAY_TIMEOUT = 504,
-}
-
 
 export function joiToError(joiError: any): IError {
   let message = 'There was an error processing your request. Please contact support.';

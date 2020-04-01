@@ -113,6 +113,14 @@ export const ErrorText = styled.div`
   text-align: center;
 `;
 
+export const SuccessText = styled.div`
+  color: ${Colors.Green};
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 20px 0;
+  text-align: center;
+`;
+
 type AuthLayoutProps = {
   title: string,
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void,

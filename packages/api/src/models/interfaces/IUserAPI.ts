@@ -8,13 +8,20 @@ import {
 export default interface IUserAPI {
   register(request: IRegisterUserRequest): Promise<IRegisterUserResponse>
   login(request: ILoginUserRequest): Promise<ILoginUserResponse>
+  sendPasswordReset(request: ISendUserPasswordResetRequest): Promise<ISendUserPasswordResetResponse>
+  // resetPassword(request: IResetUserPasswordRequest): Promise<IResetUserPasswordResponse>
   get(request: IGetUserRequest): Promise<IGetUserResponse>
   // update(request: IUpdateUserRequest): Promise<IUpdateUserResponse>
 }
 
 /********************************************************************************
-*  Auth User
+*  Authentication
 ********************************************************************************/
+
+export interface IAuthenticateUserResponse extends IResponse {
+  user?: IUser;
+  token?: string;
+}
 
 export interface IRegisterUserRequest extends IRequest {
   firstName: string;
@@ -24,18 +31,27 @@ export interface IRegisterUserRequest extends IRequest {
   password: string;
 }
 
+export interface IRegisterUserResponse extends IAuthenticateUserResponse { }
+
 export interface ILoginUserRequest extends IRequest {
   email: string;
   password: string;
 }
 
-export interface IAuthenticateUserResponse extends IResponse {
-  user?: IUser;
-  token?: string;
+export interface ILoginUserResponse extends IAuthenticateUserResponse { }
+
+export interface ISendUserPasswordResetRequest extends IRequest {
+  email: string;
 }
 
-export interface IRegisterUserResponse extends IAuthenticateUserResponse { }
-export interface ILoginUserResponse extends IAuthenticateUserResponse { }
+export interface ISendUserPasswordResetResponse extends IResponse {}
+
+export interface IResetUserPasswordRequest extends IRequest {
+  code: string;
+  password: string;
+}
+
+export interface IResetUserPasswordResponse extends IAuthenticateUserResponse {}
 
 /********************************************************************************
 *  Get User

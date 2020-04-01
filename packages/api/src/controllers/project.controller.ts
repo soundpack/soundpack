@@ -2,9 +2,9 @@ import Joi from 'joi';
 import ProjectStore from '../stores/project.store';
 import {
   toError,
-  StatusCodeEnum,
   joiToError,
 } from '../models/interfaces/common';
+import StatusCodeEnum from "../models/enums/StatusCodeEnum";
 import IProject from '@soundpack/models/.dist/interfaces/IProject';
 import IProjectAPI, {
   ICreateProjectRequest,

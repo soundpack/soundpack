@@ -139,16 +139,15 @@ export default class UserStore {
 
     return isValid;
   }
-  public async forgotPassword(email: string, forgotPasswordCode: string): Promise<boolean> {
-    let put: UpdateWriteOpResult['result'];
-
+  public async forgotPassword(email: string, forgotPasswordCode: string): Promise<IUser> {
+    let user: IUser;
     try {
-      put = await User.updateOne({ email }, { $set: { forgotPasswordCode } });
+      user = await User.findOneAndUpdate({ email }, { $set: { forgotPasswordCode } }, { new: true });
+      // user = await User.updateOne({ email }, { $set: { forgotPasswordCode } }, {new: true});
     } catch (e) {
       return Promise.reject(new UserStore.OPERATION_UNSUCCESSFUL());
     }
-
-    return put.nModified === 1;
+    return user;
   }
   public async resetPassword(forgotPasswordCode: string, newPassword: string): Promise<boolean> {
     let put: UpdateWriteOpResult['result'];
