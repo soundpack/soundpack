@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import styled from "styled-components";
 import { Colors } from "../styles/Colors";
 import * as Polished from 'polished';
-import Loader from './Loader';
+import Loader, { LoaderSizes } from './Loader';
 
 // import Icon from "./Icon";
 
@@ -133,7 +133,7 @@ export default function Button({
             )} */}
             {(() => {
               if(loading) {
-                return <Loader />
+                return <Loader size={LoaderSizes.Small}/>
               }
               
               return (

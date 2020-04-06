@@ -1,23 +1,25 @@
-import * as nodemailer from 'nodemailer';
-import nodemailerSendgrid from 'nodemailer-sendgrid';
-import {
-  SENDGRID_API_KEY,
-  DEBUG_ENABLED,
-} from './../env';
+import * as nodemailer from "nodemailer";
+import nodemailerSendgrid from "nodemailer-sendgrid";
+import { SENDGRID_API_KEY, DEBUG_ENABLED } from "./../env";
 import IEmailService, {
   ISendUserPasswordResetEmailRequest,
-  ISendUserPasswordResetEmailResponse
-} from '../models/interfaces/IEmailService';
+  ISendUserPasswordResetEmailResponse,
+  ISendUserEmailVerificationEmailRequest,
+  ISendUserEmailVerificationEmailResponse
+} from "../models/interfaces/IEmailService";
 import { toError } from "../models/interfaces/common";
-import StatusCodeEnum from '../models/enums/StatusCodeEnum';
+import StatusCodeEnum from "../models/enums/StatusCodeEnum";
 
 enum EEmailTemplates {
-  PasswordReset = 'Password Reset',
-};
+  PasswordReset = "Password Reset",
+  VerifyEmail = 'Verify Email',
+}
 
 const html: Record<EEmailTemplates, (context: any) => string> = {
   [EEmailTemplates.PasswordReset]: context =>
-    `A password reset was request for your account. <a href=${context.resetPasswordUrl}>Click here</a> to reset your password.`
+    `A password reset was request for your account. <a href=${context.resetPasswordUrl}>Click here</a> to reset your password.`,
+  [EEmailTemplates.VerifyEmail]: context =>
+    `<a href=${context.verifyEmailUrl}>Click here</a> to verify your Soundpack.io email address.`
 };
 
 export default class EmailService implements IEmailService {
@@ -41,17 +43,26 @@ export default class EmailService implements IEmailService {
     return transport;
   }
 
-  public sendEmail = async (template: EEmailTemplates, subject: string, toAddress: string, context: any): Promise<any> => {
+  public sendEmail = async (
+    template: EEmailTemplates,
+    subject: string,
+    toAddress: string,
+    context: any
+  ): Promise<any> => {
     if (DEBUG_ENABLED) {
-      console.info(`Sending ${template} email to ${toAddress} with context ${JSON.stringify(context)}`);
+      console.info(
+        `Sending ${template} email to ${toAddress} with context ${JSON.stringify(
+          context
+        )}`
+      );
     }
 
     const email = {
       subject,
       html: html[template](context),
       to: toAddress,
-      from: 'account@soundpack.io',
-      headers: { 'X-SES-CONFIGURATION-SET': 'soundpack-default' },
+      from: "account@soundpack.io",
+      headers: { "X-SES-CONFIGURATION-SET": "soundpack-default" }
     };
 
     try {
@@ -59,12 +70,11 @@ export default class EmailService implements IEmailService {
     } catch (e) {
       throw e;
     }
-
-  }
+  };
 
   /****************************************************************************************
-  * User
-  ****************************************************************************************/
+   * User
+   ****************************************************************************************/
 
   // public queueUserWelcomeEmail = async (request: pb.QueueUserWelcomeEmailRequest): Promise<pb.google.protobuf.Empty> => {
   //   await this.sendEmail(
@@ -82,8 +92,12 @@ export default class EmailService implements IEmailService {
   //   const response = pb.google.protobuf.Empty.create();
   //   return response;
   // }
-  public sendUserPasswordResetEmail = async (request: ISendUserPasswordResetEmailRequest): Promise<ISendUserPasswordResetEmailResponse> => {
-    let response: ISendUserPasswordResetEmailResponse = { status: StatusCodeEnum.UNKNOWN_CODE };
+  public sendUserPasswordResetEmail = async (
+    request: ISendUserPasswordResetEmailRequest
+  ): Promise<ISendUserPasswordResetEmailResponse> => {
+    let response: ISendUserPasswordResetEmailResponse = {
+      status: StatusCodeEnum.UNKNOWN_CODE
+    };
     try {
       await this.sendEmail(
         EEmailTemplates.PasswordReset,
@@ -93,14 +107,39 @@ export default class EmailService implements IEmailService {
           resetPasswordUrl: request.resetPasswordUrl
         }
       );
-    } catch(e) {
+    } catch (e) {
       response.status = StatusCodeEnum.INTERNAL_SERVER_ERROR;
       response.error = toError(e.message);
       return response;
     }
     response.status = StatusCodeEnum.OK;
     return response;
-  }
+  };
+
+  public sendUserEmailVerificationEmail = async (
+    request: ISendUserEmailVerificationEmailRequest
+  ): Promise<ISendUserEmailVerificationEmailResponse> => {
+    let response: ISendUserEmailVerificationEmailResponse = {
+      status: StatusCodeEnum.UNKNOWN_CODE
+    };
+    try {
+      await this.sendEmail(
+        EEmailTemplates.VerifyEmail,
+        "Soundpack - Verify your account",
+        request.toAddress,
+        {
+          verifyEmailUrl: request.verifyEmailUrl
+        }
+      );
+    } catch (e) {
+      response.status = StatusCodeEnum.INTERNAL_SERVER_ERROR;
+      response.error = toError(e.message);
+      return response;
+    }
+    response.status = StatusCodeEnum.OK;
+    return response;
+  };
+  
   // public queueInviteToOrganizationEmailRequest = async (request: pb.QueueInviteToOrganizationEmailRequest): Promise<pb.google.protobuf.Empty> => {
   //   await this.sendEmail(
   //     'inviteToOrganization',
@@ -118,5 +157,4 @@ export default class EmailService implements IEmailService {
   //   const response = pb.google.protobuf.Empty.create();
   //   return response;
   // }
-
 }

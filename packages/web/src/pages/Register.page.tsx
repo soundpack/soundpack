@@ -4,7 +4,7 @@ import Joi from "@hapi/joi";
 import Button, { ButtonTypes } from "../elements/Button";
 import LabeledInput from "../elements/LabeledInput";
 import Link from "../elements/Link";
-import REGISTER from "../graphql/mutations/register";
+import REGISTER from "../graphql/mutations/register.mutation";
 import * as Auth from "../utils/Auth";
 import * as Schema from "../utils/Schema";
 import * as ErrorUtil from '../utils/ErrorUtil';
@@ -20,41 +20,57 @@ import AuthLayout, {
 } from "../components/AuthLayout";
 
 const schema = Joi.object({
-  firstName: Joi.string().required().error(([error]) => {
-    const message = "First name is required";
-    return new Error(JSON.stringify({
-      field: error.path[0],
-      message,
-    }))
-  }),
-  lastName: Joi.string().required().error(([error]) => {
-    const message = "Last name is required.";
-    return new Error(JSON.stringify({
-      field: error.path[0],
-      message,
-    }))
-  }),
+  firstName: Joi.string()
+    .required()
+    .error(([error]) => {
+      const message = "First name is required";
+      return new Error(
+        JSON.stringify({
+          field: error.path[0],
+          message
+        })
+      );
+    }),
+  lastName: Joi.string()
+    .required()
+    .error(([error]) => {
+      const message = "Last name is required.";
+      return new Error(
+        JSON.stringify({
+          field: error.path[0],
+          message
+        })
+      );
+    }),
   email: Schema.email().error(([error]) => {
     const message = "Email is invalid";
-    return new Error(JSON.stringify({
-      field: error.path[0],
-      message,
-    }))
+    return new Error(
+      JSON.stringify({
+        field: error.path[0],
+        message
+      })
+    );
   }),
   password: Schema.password().error(([error]) => {
     const message = "Password is invalid";
-    return new Error(JSON.stringify({
-      field: error.path[0],
-      message,
-    }))
+    return new Error(
+      JSON.stringify({
+        field: error.path[0],
+        message
+      })
+    );
   }),
-  confirmPassword: Schema.password().error(([error]) => {
-    const message = "Passwords do not match";
-    return new Error(JSON.stringify({
-      field: error.path[0],
-      message,
-    }))
-  })
+  confirmPassword: Schema.password()
+    .valid(Joi.ref("password"))
+    .error(([error]) => {
+      const message = "Passwords do not match";
+      return new Error(
+        JSON.stringify({
+          field: error.path[0],
+          message
+        })
+      );
+    })
 });
 
 type RegisterPageProps = {};

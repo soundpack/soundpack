@@ -84,39 +84,6 @@ export default class UserStore {
     }
     return user;
   }
-  public async saveEmailVerifyCode(userId: string, emailVerifyCode: string): Promise<boolean> {
-    let put: UpdateWriteOpResult["result"];
-
-    try {
-      put = await User.updateOne({ _id: userId }, { $set: { emailVerifyCode } });
-    } catch (e) {
-      return Promise.reject(new UserStore.OPERATION_UNSUCCESSFUL());
-    }
-
-    return put.nModified === 1;
-  }
-  public async verifyEmail(emailVerifyCode: string): Promise<boolean> {
-    let put: UpdateWriteOpResult['result'];
-
-    try {
-      put = await User.updateOne({ emailVerifyCode }, { $set: { emailVerifiedAt: Date.now() }});
-    } catch (e) {
-      return Promise.reject(new UserStore.OPERATION_UNSUCCESSFUL());
-    }
-
-    return put.nModified === 1;
-  }
-  public async verifyPhoneNumber(userId: string): Promise<boolean> {
-    let put: UpdateWriteOpResult['result'];
-
-    try {
-      put = await User.updateOne({ _id: userId }, { $set: { phoneNumberVerifiedAt: Date.now() } });
-    } catch (e) {
-      return Promise.reject(new UserStore.OPERATION_UNSUCCESSFUL());
-    }
-
-    return put.nModified === 1;
-  }
   private async hashPassword(password: string): Promise<string> {
     try {
       Joi.assert(password, Joi.string().required());
@@ -180,6 +147,41 @@ export default class UserStore {
       return Promise.reject(new UserStore.OPERATION_UNSUCCESSFUL());
     }
 
+    return user;
+  }
+  public async setVerifyEmailCode(email: string, verifyEmailCode: string): Promise<IUser> {
+    let user: IUser;
+    try {
+      user = await User.findOneAndUpdate(
+        { email },
+        {
+          $set: {
+            verifyEmailCode,
+          }
+        },
+        { new: true }
+      );
+    } catch (e) {
+      return Promise.reject(new UserStore.OPERATION_UNSUCCESSFUL());
+    }
+    return user;
+  }
+    public async verifyEmail(verifyEmailCode: string): Promise<IUser> {
+    let user: IUser;
+    try {
+      user = await User.findOneAndUpdate(
+        { verifyEmailCode },
+        {
+          $set: {
+            verifyEmailCode: null,
+            emailVerifiedAt: Date.now(),
+          }
+        },
+        { new: true }
+      );
+    } catch (e) {
+      return Promise.reject(new UserStore.OPERATION_UNSUCCESSFUL());
+    }
     return user;
   }
   public async get(userId: string): Promise<IUser> {

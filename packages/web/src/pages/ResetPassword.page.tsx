@@ -5,7 +5,7 @@ import queryString from "query-string";
 import Button, { ButtonTypes } from "../elements/Button";
 import LabeledInput from "../elements/LabeledInput";
 import Link from "../elements/Link";
-import RESET_PASSWORD from "../graphql/mutations/resetPassword";
+import RESET_PASSWORD from "../graphql/mutations/resetPassword.mutation";
 import * as Auth from "../utils/Auth";
 import * as Schema from "../utils/Schema";
 import * as ErrorUtil from "../utils/ErrorUtil";

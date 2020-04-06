@@ -44,7 +44,7 @@ const orgSchema = Joi.object().keys({
 
 const authenticatedSchema = Joi.object().keys({
   userId: Joi.string().required(),
-})
+});
 
 export default class OrganizationController implements IOrganizationAPI {
   private storage = new OrganizationStore();

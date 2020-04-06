@@ -25,7 +25,7 @@ const Title = styled.div`
 `;
 
 export type ModalProps = {
-  title: string;
+  title?: string;
   children: ReactNode;
 };
 
@@ -35,9 +35,7 @@ export default function Button({
 }: ModalProps) {
   return (
     <StyledModal>
-      <Header>
-        <Title>{title}</Title>
-      </Header>
+      <Header>{title && <Title>{title}</Title>}</Header>
       {children}
     </StyledModal>
   );

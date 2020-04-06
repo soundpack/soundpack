@@ -4,7 +4,7 @@ import {
 } from 'apollo-server-express';
 import controller from '../../controllers/controller';
 import {
-  IGetUserRequest, 
+  IGetUserRequest,
   IGetUserResponse,
   IRegisterUserRequest,
   IRegisterUserResponse,
@@ -14,7 +14,9 @@ import {
   ISendUserPasswordResetResponse,
   IResetUserPasswordRequest,
   IResetUserPasswordResponse,
-} from '../../models/interfaces/IUserAPI';
+  IVerifyUserEmailRequest,
+  IVerifyUserEmailResponse,
+} from "../../models/interfaces/IUserAPI";
 
 export default {
   Query: {
@@ -33,7 +35,10 @@ export default {
         response = await controller.user.get(request);
 
         if (response.status !== StatusCodeEnum.OK) {
-          throw new ApolloError(response.error.message, response.status.toString());
+          throw new ApolloError(
+            response.error.message,
+            response.status.toString()
+          );
         }
       } catch (e) {
         throw e;
@@ -62,7 +67,10 @@ export default {
         response = await controller.user.register(request);
 
         if (response.status !== StatusCodeEnum.OK) {
-          throw new ApolloError(response.error.message, response.status.toString());
+          throw new ApolloError(
+            response.error.message,
+            response.status.toString()
+          );
         }
       } catch (e) {
         throw e;
@@ -98,7 +106,7 @@ export default {
     async sendPasswordReset(parent, args, context) {
       const { email } = args;
       const request: ISendUserPasswordResetRequest = {
-        email,
+        email
       };
 
       let response: ISendUserPasswordResetResponse;
@@ -107,7 +115,10 @@ export default {
         response = await controller.user.sendPasswordReset(request);
 
         if (response.status !== StatusCodeEnum.OK) {
-          throw new ApolloError(response.error.message, response.status.toString());
+          throw new ApolloError(
+            response.error.message,
+            response.status.toString()
+          );
         }
       } catch (e) {
         throw e;
@@ -116,14 +127,11 @@ export default {
       return true;
     },
     async resetPassword(parent, args, context) {
-      const { 
-        resetPasswordCode,
-        password,
-      } = args;
+      const { resetPasswordCode, password } = args;
 
       const request: IResetUserPasswordRequest = {
         resetPasswordCode,
-        password,
+        password
       };
 
       let response: IResetUserPasswordResponse;
@@ -132,13 +140,40 @@ export default {
         response = await controller.user.resetPassword(request);
 
         if (response.status !== StatusCodeEnum.OK) {
-          throw new ApolloError(response.error.message, response.status.toString());
+          throw new ApolloError(
+            response.error.message,
+            response.status.toString()
+          );
         }
       } catch (e) {
         throw e;
       }
 
       return response;
+    },
+    async verifyEmail(parent, args, context) {
+      const { verifyEmailCode } = args;
+
+      const request: IVerifyUserEmailRequest = {
+        verifyEmailCode,
+      };
+
+      let response: IVerifyUserEmailResponse;
+
+      try {
+        response = await controller.user.verifyEmail(request);
+
+        if (response.status !== StatusCodeEnum.OK) {
+          throw new ApolloError(
+            response.error.message,
+            response.status.toString()
+          );
+        }
+      } catch (e) {
+        throw e;
+      }
+
+      return response.verified;
     }
   }
 };

@@ -5,6 +5,7 @@ import Login from './pages/Login.page';
 import Register from "./pages/Register.page";
 import ForgotPassword from "./pages/ForgotPassword.page";
 import ResetPassword from "./pages/ResetPassword.page";
+import VerifyEmail from "./pages/VerifyEmail.page";
 import Loader, { LoaderSizes } from './elements/Loader';
 import { Colors } from './styles/Colors';
 
@@ -86,6 +87,7 @@ export default function App() {
           <Route path="/register" component={Register} />
           <Route path="/forgot-password" component={ForgotPassword} />
           <Route path="/reset-password" component={ResetPassword} />
+          <Route path="/verify-email" component={VerifyEmail} />
         </Switch>
       </Container>
     </Fragment>

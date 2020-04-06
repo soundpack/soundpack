@@ -10,6 +10,8 @@ export default interface IUserAPI {
   login(request: ILoginUserRequest): Promise<ILoginUserResponse>
   sendPasswordReset(request: ISendUserPasswordResetRequest): Promise<ISendUserPasswordResetResponse>
   resetPassword(request: IResetUserPasswordRequest): Promise<IResetUserPasswordResponse>
+  sendEmailVerification(request: ISendUserEmailVerificationRequest): Promise<ISendUserEmailVerificationResponse>
+  verifyEmail(request: IVerifyUserEmailRequest): Promise<IVerifyUserEmailResponse>
   get(request: IGetUserRequest): Promise<IGetUserResponse>
   // update(request: IUpdateUserRequest): Promise<IUpdateUserResponse>
 }
@@ -40,6 +42,10 @@ export interface ILoginUserRequest extends IRequest {
 
 export interface ILoginUserResponse extends IAuthenticateUserResponse { }
 
+
+/********************************************************************************
+*  Reset Password
+********************************************************************************/
 export interface ISendUserPasswordResetRequest extends IRequest {
   email: string;
 }
@@ -52,6 +58,23 @@ export interface IResetUserPasswordRequest extends IRequest {
 }
 
 export interface IResetUserPasswordResponse extends IAuthenticateUserResponse {}
+
+/********************************************************************************
+*  Verify Email
+********************************************************************************/
+export interface ISendUserEmailVerificationRequest extends IAuthenticatedRequest {
+  email: string;
+}
+
+export interface ISendUserEmailVerificationResponse extends IResponse {}
+
+export interface IVerifyUserEmailRequest extends IRequest {
+  verifyEmailCode: string;
+}
+
+export interface IVerifyUserEmailResponse extends IResponse {
+  verified?: boolean;
+}
 
 /********************************************************************************
 *  Get User

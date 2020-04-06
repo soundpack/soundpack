@@ -27,7 +27,7 @@ export const Overlay = styled.div`
 
 type ContainerProps = {
   children: React.ReactNode;
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void;
 };
 
 export const Container = ({ children, onSubmit }: ContainerProps) => {
@@ -105,9 +105,13 @@ export const Footer = styled.div`
   margin: 20px 0 10px;
 `;
 
-export const ErrorText = styled.div`
+type ErrorTextProps = {
+  large?: boolean;
+}
+
+export const ErrorText = styled.div<ErrorTextProps>`
   color: ${Colors.Red};
-  font-size: 1.2rem;
+  font-size: ${props => props.large ? '1.6rem': '1.2rem'};
   font-weight: 500;
   margin: 20px 0;
   text-align: center;
@@ -122,8 +126,8 @@ export const SuccessText = styled.div`
 `;
 
 type AuthLayoutProps = {
-  title: string,
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void,
+  title?: string,
+  onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void,
   children: React.ReactNode,
 };
 

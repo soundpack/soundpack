@@ -35,12 +35,7 @@ export default {
     type: String,
     required: false,
   },
-  phoneNumberVerifiedAt: {
-    type: Number,
-    required: false,
-    default: '',
-  },
-  emailVerifyCode: {
+  verifyEmailCode: {
     type: String,
     required: false,
     default: null,

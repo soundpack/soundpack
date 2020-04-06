@@ -95,6 +95,7 @@ const schema = gql`
     login(email: String!, password: String!): Authentication
     sendPasswordReset(email: String!): Boolean
     resetPassword(resetPasswordCode: String!, password: String!): Authentication
+    verifyEmail(verifyEmailCode: String!): Boolean
 
     # Organization
     updateOrganization(organization: OrgInput!): Organization

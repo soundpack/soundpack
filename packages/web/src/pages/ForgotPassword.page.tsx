@@ -4,7 +4,7 @@ import Joi from "@hapi/joi";
 import Button, { ButtonTypes } from "../elements/Button";
 import LabeledInput from "../elements/LabeledInput";
 import Link from "../elements/Link";
-import SEND_PASSWORD_RESET from "../graphql/mutations/sendPasswordReset";
+import SEND_PASSWORD_RESET from "../graphql/mutations/sendPasswordReset.mutation";
 import * as Auth from "../utils/Auth";
 import * as Schema from "../utils/Schema";
 import * as ErrorUtil from "../utils/ErrorUtil";
