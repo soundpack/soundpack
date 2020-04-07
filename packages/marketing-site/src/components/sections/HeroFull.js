@@ -68,7 +68,7 @@ class HeroFull extends React.Component {
                 </h1>
               </div>
             </div>
-            <div className="hero-figure illustration-element-02 reveal-scale-up">
+            <div className="hero-figure reveal-scale-up">
               <a
                 data-video="https://player.vimeo.com/video/174002812"
                 href="#0"

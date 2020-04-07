@@ -64,13 +64,13 @@ class HeroSplit extends React.Component {
               <div className="split-item">
                 <div className="hero-content split-item-content center-content-mobile">
                   <h1 className="mt-0 mb-16 reveal-from-left">
-                    Landing template for startups
+                    Easily transcribe and store audio files
                   </h1>
                   <p className="mt-0 mb-24 reveal-from-left" data-reveal-delay="200">
-                    Our landing page template works on all devices, so you only have to set it up once, and get beautiful results forever.
+                    Soundpack allows you to easily transcribe, store, and search for audio files in just a few minutes, reducing the amount of time spent on transcription so you can focus on what matters.
                   </p>
                   <div className="reveal-from-left" data-reveal-delay="400">
-                    <Button tag="a" color="primary" href="https://cruip.com/" wideMobile>
+                    <Button tag="a" color="primary" href="https:app.soundpack.io/register" wideMobile>
                       Get started
                     </Button>
                   </div>
