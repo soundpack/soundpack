@@ -33,7 +33,7 @@ const StyledButton = styled.div<StyledButtonProps>`
   text-align: center;
   background-color: ${props => {
     if (props.type === ButtonTypes.Submit) {
-      return Colors.Purple;
+      return Colors.Blue;
     }
 
     if (props.type === ButtonTypes.Warning) {
@@ -49,7 +49,7 @@ const StyledButton = styled.div<StyledButtonProps>`
     cursor: ${props => props.onClick ? 'pointer' : null};
     background-color: ${props => {
       if (props.onClick && props.type === ButtonTypes.Submit) {
-        return Polished.lighten(0.025, Colors.Purple);
+        return Polished.lighten(0.025, Colors.Blue);
       }
 
       if (props.onClick && props.type === ButtonTypes.Warning) {
@@ -63,7 +63,7 @@ const StyledButton = styled.div<StyledButtonProps>`
     cursor: ${props => props.onClick ? 'pointer' : null};
     background-color: ${props => {
       if (props.onClick && props.type === ButtonTypes.Submit) {
-        return Polished.darken(0.025, Colors.Purple);
+        return Polished.darken(0.025, Colors.Blue);
       }
 
       if (props.onClick && props.type === ButtonTypes.Warning) {
@@ -90,7 +90,7 @@ const Text = styled.span<TextProps>`
   }};
   margin-left: ${(props: any) => (props.icon ? "10px" : 0)};
   font-size: 1.4rem;
-  font-weight: 500;
+  font-weight: 600;
 `;
 
 export type ButtonProps = {

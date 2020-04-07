@@ -10,7 +10,7 @@ const Container = styled.div`
 
 const Label = styled.div`
   font-size: 1.2rem;
-  font-weight: 500;
+  font-weight: 600;
   color: ${Colors.Grey2};
   margin-bottom: 5px;
 `;
@@ -18,7 +18,7 @@ const Label = styled.div`
 const ErrorText = styled.div`
   color: ${Colors.Red};
   font-size: 1.2rem;
-  font-weight: 500;
+  font-weight: 600;
   margin-top: 5px;
 `;
 

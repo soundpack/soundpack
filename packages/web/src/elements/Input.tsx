@@ -10,7 +10,7 @@ type StyledInputProps = {
 }
 
 const InputStyled = styled.input<StyledInputProps>`
-  background-color: ${Colors.VeryLightPurple};
+  background-color: ${Colors.VeryLightBlue};
   color: ${Colors.Grey1};
   outline: none;
   border: 0px;
@@ -18,7 +18,7 @@ const InputStyled = styled.input<StyledInputProps>`
   height: 33px;
   width: fill-available;
   font-size: 1.2rem;
-  font-weight: 500;
+  font-weight: 600;
   padding: 0 0 0 10px;
   transition: all 0.2s;
   margin: ${props => props.margin};
@@ -26,26 +26,28 @@ const InputStyled = styled.input<StyledInputProps>`
   border: ${props =>
     props.error
       ? `1px solid ${Colors.Red}`
-      : `1px solid ${Colors.VeryLightPurple}`};
+      : `1px solid ${Colors.VeryLightBlue}`};
 
   ::placeholder {
     color: ${Colors.Grey4};
+    font-family: 'Nunito Sans';
+    font-weight: 600;
   }
 
   &:hover {
-    background-color: ${Polished.darken(0.01, Colors.VeryLightPurple)};
+    background-color: ${Polished.darken(0.01, Colors.VeryLightBlue)};
     border: ${props =>
       props.error
         ? `1px solid ${Colors.Red}`
-        : `1px solid ${Polished.darken(0.01, Colors.VeryLightPurple)}`};
+        : `1px solid ${Polished.darken(0.01, Colors.VeryLightBlue)}`};
   }
 
   &:focus {
-    background-color: ${Polished.darken(0.02, Colors.VeryLightPurple)};
+    background-color: ${Polished.darken(0.02, Colors.VeryLightBlue)};
     border: ${props =>
       props.error
         ? `1px solid ${Colors.Red}`
-        : `1px solid ${Polished.darken(0.02, Colors.VeryLightPurple)}`};
+        : `1px solid ${Polished.darken(0.02, Colors.VeryLightBlue)}`};
   }
 `;
 

@@ -80,7 +80,7 @@ const VerifyEmailPage: React.FC<VerifyEmailPageProps> = ({ history }) => {
           if (loading) {
             return (
               <LoaderContainer>
-                <Loader color={Colors.Purple} />
+                <Loader color={Colors.Blue} />
               </LoaderContainer>
             );
           }

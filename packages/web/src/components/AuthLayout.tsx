@@ -14,7 +14,7 @@ export const AuthContainer = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: url(${backgroundImageSrc});
+  /* background-image: url(${backgroundImageSrc}); */
   background-position: left;
 `;
 
@@ -22,7 +22,7 @@ export const Overlay = styled.div`
   position: absolute;
   height: 100%;
   width: 100%;
-  background-color: ${Polished.rgba(Colors.DarkBlue, 0.9)};
+  background-color: ${Polished.rgba(Colors.DarkBlue, 1)};
 `;
 
 type ContainerProps = {
@@ -44,6 +44,7 @@ export const HeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  z-index: 1000;
 `;
 
 export const Header = () => (
@@ -61,9 +62,16 @@ const LogoImg = styled.img`
   width: 300px;
 `;
 
+const LogoText = styled.div`
+  font-size: 3rem;
+  font-weight: 600;
+  color: ${Colors.White};
+`;
+
 export const Logo = () => (
   <LogoContainer>
     <Link to="/">
+      {/* <LogoText>Soundpack</LogoText> */}
       <LogoImg src={logoSrc} />
     </Link>
   </LogoContainer>
@@ -98,7 +106,7 @@ export const Spacer = styled.div`
 export const Text = styled.div`
   color: ${Colors.Grey1};
   font-size: 1.2rem;
-  font-weight: 500;
+  font-weight: 600;
 `;
 
 export const Footer = styled.div`
@@ -112,7 +120,7 @@ type ErrorTextProps = {
 export const ErrorText = styled.div<ErrorTextProps>`
   color: ${Colors.Red};
   font-size: ${props => props.large ? '1.6rem': '1.2rem'};
-  font-weight: 500;
+  font-weight: 600;
   margin: 20px 0;
   text-align: center;
 `;
@@ -120,7 +128,7 @@ export const ErrorText = styled.div<ErrorTextProps>`
 export const SuccessText = styled.div`
   color: ${Colors.Green};
   font-size: 1.2rem;
-  font-weight: 500;
+  font-weight: 600;
   margin: 20px 0;
   text-align: center;
 `;

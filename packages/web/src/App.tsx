@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import Login from './pages/Login.page';
 import Register from "./pages/Register.page";
@@ -44,7 +44,7 @@ function PageLoader() {
 
   return (
     <PageLoaderContainer fade={fade}>
-      <Loader size={LoaderSizes.Large} color={Colors.Purple} />
+      <Loader size={LoaderSizes.Large} color={Colors.Blue} />
     </PageLoaderContainer>
   );
 }
@@ -83,6 +83,7 @@ export default function App() {
       {/* <PageLoader /> */}
       <Container>
         <Switch>
+          <Redirect exact from="/" to="/login" />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <Route path="/forgot-password" component={ForgotPassword} />
