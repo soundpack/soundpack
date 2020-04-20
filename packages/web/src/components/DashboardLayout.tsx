@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-// import SideNavigation from './SideNavigation';
+import MainNavigation from './MainNavigation';
 import { Colors } from "../styles/Colors";
 
 const Container = styled.div`
@@ -24,7 +24,7 @@ type DashboardLayoutProps = {
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   return (
     <Container>
-      {/* <SideNavigation /> */}
+      <MainNavigation />
       <Content>{children}</Content>
     </Container>
   );

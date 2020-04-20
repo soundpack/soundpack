@@ -24,8 +24,8 @@ const ProjectDetailsContainer: React.FC<ProjectDetailalsContainerProps> = ({ mat
   return (
     <Container>
       <Header>
-        <Link to={`${match.path}`}>Dashboard</Link>
-        <Link to={`${match.path}/audience`}>Projects</Link>
+        <Link to={`${match.path}/projects`}>Projects</Link>
+        <Link to={`${match.path}/audience`}></Link>
       </Header>
       <Content>
         {/* <Route path={`${match.url}/audience`} component={ProjectAudience} />
