@@ -43,7 +43,7 @@ export default class EmailService implements IEmailService {
     return transport;
   }
 
-  public sendEmail = async (
+  private sendEmail = async (
     template: EEmailTemplates,
     subject: string,
     toAddress: string,

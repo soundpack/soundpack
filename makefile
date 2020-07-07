@@ -3,4 +3,5 @@ start:
 	lerna run start --parallel
 
 mongo:
-	kubectl port-forward svc/soundpack-mongodb 27017:27017
+	# kubectl port-forward svc/soundpack-mongodb 27017:27017
+	mongod --dbpath=db

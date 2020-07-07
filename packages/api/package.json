@@ -26,6 +26,7 @@
   "author": "sam@soundpack.io",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/speech": "^4.1.0",
     "@google-cloud/storage": "^4.0.0",
     "@soundpack/models": "^0.0.3",
     "@soundpack/utils": "^0.0.3",
