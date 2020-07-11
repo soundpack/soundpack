@@ -10,7 +10,8 @@ import Button, { ButtonTypes } from '../elements/Button';
 import { Colors } from '../styles/Colors';
 import { ModalTypes } from '../components/modal/Modal';
 import gql from 'graphql-tag';
-
+import LIST_PROJECTS from '../graphql/queries/projects.query';
+import IProject from '@soundpack/models/.dist/interfaces/IProject';
 
 const file = gql`
   query File {
@@ -22,7 +23,7 @@ const file = gql`
           words {
             startTime {
               seconds 
-              nanos
+              nano
             }
             endTime {
               seconds
@@ -37,17 +38,29 @@ const file = gql`
 `;
 
 const Container = styled.div`
-  background-color: ${Colors.WhiteSmoke};
+  position: relative;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  width: fill-available;
+  /* background-color: ${Colors.WhiteSmoke}; */
+  /* display: flex;
+  flex-direction: row; */
+`;
+
+const Content = styled.div`
+  /* padding: 0 20px; */
 `;
 
 const Event = styled.div`
-  width: 200px;
-  height: 300px;
-  margin-right: 20px;
-  border: 1px solid grey;
+  display: border-box;
+  width: 320px;
+  height: 195px;
+  padding: 15px;
+  margin-left: 20px;
+  margin-top: 30px;
   border-radius: 5px;
+  border: 1px solid ${Colors.Grey6};
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
 `;
 
 export default function EventList({match}: any) {
@@ -62,23 +75,7 @@ export default function EventList({match}: any) {
   const createProject = () =>
     dispatch(AppActions.pushModal(ModalTypes.CreateProject));
 
-  const { data, loading, error } = useQuery(file);
-
-
-  console.log(data);
-
-  // const saveProject = () => {
-  //   dispatch(ProjectActions.CreateProjectRequest());
-  //   popModal();
-  // }
-
-  /* GraphQL */
-  // const { data, loading, error } = useQuery(LIST_EVENTS);
-
-  // let events = [];
-
-
-  // if(data) events = data.events;
+  const { data, loading, error } = useQuery(LIST_PROJECTS);
 
   return (
     <Container>
@@ -91,6 +88,11 @@ export default function EventList({match}: any) {
           width="180px"
         />
       </PageHeader>
+      <Content>
+        {data?.projects.map((project: IProject) => {
+          return <Event>{project.name}</Event>;
+        })}
+      </Content>
     </Container>
   );
 };

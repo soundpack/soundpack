@@ -23,7 +23,7 @@ export default {
   Query: {
     async file(parent, args, context) {
       const file = await fs.readFileSync('/Users/samheutmaker/desktop/juice/src/soundpack/files/results1.json').toString();
-      console.log(file);
+      // console.log(file);
       return JSON.parse(file);
     }
   },

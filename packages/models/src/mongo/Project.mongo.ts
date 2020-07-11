@@ -1,4 +1,5 @@
 import shortid from "shortid";
+import MetaData from './MetaData.mongo';
 
 export default {
   _id: {
@@ -23,20 +24,10 @@ export default {
     type: String,
     required: false,
   },
-  createdAt: {
-    type: Number,
-    required: true,
-  },
-  createdBy: {
+  fileIds: [{
     type: String,
-    required: true,
-  },
-  lastUpdatedAt: {
-    type: Number,
-    required: true,
-  },
-  lastUpdatedBy: {
-    type: String,
-    required: true,
-  },
+    required: false,
+    default: [],
+  }],
+  meta: MetaData,
 };

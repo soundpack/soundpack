@@ -3,6 +3,7 @@ import ProjectStore from '../stores/project.store';
 import {
   toError,
   joiToError,
+  IAuthorizationData,
 } from '../models/interfaces/common';
 import StatusCodeEnum from "../models/enums/StatusCodeEnum";
 import IProject from '@soundpack/models/.dist/interfaces/IProject';
@@ -19,32 +20,34 @@ import IProjectAPI, {
   IDeleteProjectResponse,
 } from '../models/interfaces/IProjectAPI';
 import { IController } from './controller';
+import moment from 'moment';
 
-const orgSchema = Joi.object().keys({
-  _id: Joi.string().optional(),
-  userId: Joi.string().optional(),
-  createdAt: Joi.date().optional(),
+const createProjectSchema = Joi.object().keys({
+  organizationId: Joi.string()
+    .required()
+    .error(() => new Error("A project must be associated with an organization.")),
   name: Joi.string()
     .required()
-    .error(() => new Error("Your team must have a name.")),
-  email: Joi.string()
-    .required()
-    .error(() => new Error("Your team must have an email.")),
-  phoneNumber: Joi.string()
-    .optional()
-    .error(() => new Error("Your team must have a phone number.")),
+    .error(() => new Error("Your project must have a name.")),
   description: Joi.string()
-    .optional()
-    .error(() => new Error("Your team must have a description.")),
-  address: Joi.string()
-    .optional()
-    .allow('')
-    .error(() => new Error("Your team must have an address.")),
+    .optional(),
 });
 
-const authenticatedSchema = Joi.object().keys({
+const updateProjectSchema = Joi.object().keys({
+  _id: Joi.string().required(),
+  organizationId: Joi.string()
+    .optional(),
+  name: Joi.string()
+    .optional(),
+  description: Joi.string()
+    .optional(),
+});
+
+const authorizedSchema = Joi.object().keys({
   userId: Joi.string().required(),
-})
+  organizationId: Joi.string().required(),
+});
+
 
 export default class ProjectController implements IProjectAPI {
   private storage = new ProjectStore();
@@ -56,57 +59,55 @@ export default class ProjectController implements IProjectAPI {
   }
 
   public create = async (request: ICreateProjectRequest): Promise<ICreateProjectResponse> => {
-    let response: ICreateProjectResponse;
+    let response: ICreateProjectResponse = { status: StatusCodeEnum.UNKNOWN_CODE };
+
+    console.log(request);
 
     const schema = Joi.object().keys({
-      auth: authenticatedSchema,
-      project: orgSchema,
+      auth: authorizedSchema,
+      project: createProjectSchema,
     });
 
     const params = Joi.validate(request, schema);
-    const {  project }: { project: IProject } = params.value;
+    const { project, auth }: { project: IProject, auth: IAuthorizationData } = params.value;
 
     if (params.error) {
       console.error(params.error);
-      response = {
-        status: StatusCodeEnum.UNPROCESSABLE_ENTITY,
-        error: joiToError(params.error),
-      };
+      response.status = StatusCodeEnum.UNPROCESSABLE_ENTITY;
+      response.error = joiToError(params.error);
       return response;
     }
 
     /**
     * Save the project to storage
     */
-    const now = Date.now();
+    const now = moment().unix();
     project.meta = {
+      createdBy: auth.userId,
       createdAt: now,
+      lastUpdatedBy: auth.userId,
       lastUpdatedAt: now,
     };
 
     try {
       const newProject = await this.storage.create(project);
-      response = {
-        status: StatusCodeEnum.OK,
-        project: newProject
-      };
+      response.status = StatusCodeEnum.OK;
+      response.project = newProject;
       return response;
     } catch (e) {
       console.error(e);
-      response = {
-        status: StatusCodeEnum.INTERNAL_SERVER_ERROR,
-        error: toError(e.message),
-      };
+      response.status = StatusCodeEnum.INTERNAL_SERVER_ERROR;
+      response.error = toError(e.message);
       return response;
     }
   }
 
   public update = async (request: IUpdateProjectRequest): Promise<IUpdateProjectResponse> => {
-    let response: IUpdateProjectResponse;
+    let response: IUpdateProjectResponse = { status: StatusCodeEnum.UNKNOWN_CODE };
 
     const schema = Joi.object().keys({
       userId: Joi.string().required(),
-      org: orgSchema,
+      project: updateProjectSchema,
     });
 
     const params = Joi.validate(request, schema);
@@ -114,10 +115,8 @@ export default class ProjectController implements IProjectAPI {
 
     if (params.error) {
       console.error(params.error);
-      response = {
-        status: StatusCodeEnum.UNPROCESSABLE_ENTITY,
-        error: joiToError(params.error),
-      };
+      response.status = StatusCodeEnum.UNPROCESSABLE_ENTITY;
+      response.error = joiToError(params.error);
       return response;
     }
 
@@ -125,59 +124,50 @@ export default class ProjectController implements IProjectAPI {
 
     try {
       const newProject = await this.storage.update(userId, project);
-      response = {
-        status: StatusCodeEnum.OK,
-        project: newProject
-      };
+      response.status = StatusCodeEnum.OK;
+      response.project = newProject;
       return response;
     } catch (e) {
       console.error(e);
-      response = {
-        status: StatusCodeEnum.INTERNAL_SERVER_ERROR,
-        error: toError(e.message),
-      };
+      response.status = StatusCodeEnum.INTERNAL_SERVER_ERROR;
+      response.error = toError(e.message);
       return response;
     }
   }
 
   public list = async (request: IListProjectsRequest): Promise<IListProjectsResponse> => {
-    let response: IListProjectsResponse;
+    let response: IListProjectsResponse = { status: StatusCodeEnum.UNKNOWN_CODE };
 
     const schema = Joi.object().keys({
-      userId: Joi.string().optional(),
+      auth: authorizedSchema,
+      organizationId: Joi.string().required(),
     });
 
     const params = Joi.validate(request, schema);
-    const { userId }: { userId: string } = params.value;
+    const { organizationId }: { organizationId: string } = params.value;
 
     if (params.error) {
       console.error(params.error);
-      response = {
-        status: StatusCodeEnum.UNPROCESSABLE_ENTITY,
-        error: joiToError(params.error),
-      };
+      response.status = StatusCodeEnum.UNPROCESSABLE_ENTITY;
+      response.error = joiToError(params.error);
       return response;
     }
 
     try {
-      const projects = await this.storage.list(userId || null);
-      response = {
-        status: StatusCodeEnum.OK,
-        projects,
-      };
+      const projects = await this.storage.list(organizationId);
+      response.status = StatusCodeEnum.OK;
+      response.projects = projects;
       return response;
     } catch (e) {
       console.error(e);
-      response = {
-        status: StatusCodeEnum.INTERNAL_SERVER_ERROR,
-        error: toError(e.message),
-      };
+      response.status = StatusCodeEnum.INTERNAL_SERVER_ERROR;
+      response.error = toError(e.message);
       return response;
     }
   }
 
   public get = async (request: IGetProjectRequest): Promise<IGetProjectResponse> => {
-    let response: IGetProjectResponse;
+    let response: IGetProjectResponse = { status: StatusCodeEnum.UNKNOWN_CODE };
 
     const schema = Joi.object().keys({
       projectId: Joi.string().allow(null).required(),
@@ -188,32 +178,26 @@ export default class ProjectController implements IProjectAPI {
 
     if (params.error) {
       console.error(params.error);
-      response = {
-        status: StatusCodeEnum.UNPROCESSABLE_ENTITY,
-        error: joiToError(params.error),
-      };
+      response.status = StatusCodeEnum.UNPROCESSABLE_ENTITY;
+      response.error = joiToError(params.error);
       return response;
     }
 
     try {
       const project = await this.storage.get(projectId);
-      response = {
-        status: StatusCodeEnum.OK,
-        project,
-      };
+      response.status = StatusCodeEnum.OK;
+      response.project = project;
       return response;
     } catch (e) {
       console.error(e);
-      response = {
-        status: StatusCodeEnum.INTERNAL_SERVER_ERROR,
-        error: toError(e.message),
-      };
+      response.status = StatusCodeEnum.INTERNAL_SERVER_ERROR;
+      response.error = toError(e.message);
       return response;
     }
   }
 
   public delete = async (request: IDeleteProjectRequest): Promise<IDeleteProjectResponse> => {
-    let response: IDeleteProjectResponse;
+    let response: IDeleteProjectResponse = { status: StatusCodeEnum.UNKNOWN_CODE, deleted: false };
 
     const schema = Joi.object().keys({
       userId: Joi.string().required(),
@@ -225,28 +209,22 @@ export default class ProjectController implements IProjectAPI {
 
     if (params.error) {
       console.error(params.error);
-      response = {
-        status: StatusCodeEnum.UNPROCESSABLE_ENTITY,
-        error: joiToError(params.error),
-        deleted: false,
-      };
+      response.status = StatusCodeEnum.UNPROCESSABLE_ENTITY;
+      response.error = joiToError(params.error);
+      response.deleted = false;
       return response;
     }
 
     try {
       const deleted = await this.storage.delete(userId, projectId);
-      response = {
-        status: StatusCodeEnum.OK,
-        deleted,
-      };
+      response.status = StatusCodeEnum.OK;
+      response.deleted = deleted;
       return response;
     } catch (e) {
       console.error(e);
-      response = {
-        status: StatusCodeEnum.INTERNAL_SERVER_ERROR,
-        error: toError(e.message),
-        deleted: null,
-      };
+      response.status = StatusCodeEnum.INTERNAL_SERVER_ERROR;
+      response.error = toError(e.message);
+      response.deleted = false;
       return response;
     }
   }

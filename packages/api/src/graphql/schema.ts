@@ -7,6 +7,7 @@ import userResolvers from "./resolvers/user.resolvers";
 import fileUploadResolvers from "./resolvers/fileUpload.resolvers";
 import organizationResolvers from "./resolvers/organization.resolvers";
 import fileResolvers from "./resolvers/file.resolvers";
+import projectResolvers from "./resolvers/project.resolvers";
 
 const schema = gql`
   scalar Upload
@@ -48,8 +49,6 @@ const schema = gql`
     _id: String
     userId: String
     user: User
-    createdAt: GraphQLDateTime
-    lastUpdatedAt: GraphQLDateTime
     active: Boolean
     name: String
     description: String
@@ -65,6 +64,27 @@ const schema = gql`
     phoneNumber: String
     email: String
     address: String
+  }
+
+  ######################################################################
+  # Project
+  ######################################################################
+
+  type Project {
+    _id: String
+    organizationId: String
+    active: Boolean
+    name: String
+    description: String
+    fileIds: [String]
+    meta: MetaData
+  }
+
+  input ProjectInput {
+    _id: String
+    organizationId: String
+    name: String
+    description: String
   }
 
   ######################################################################
@@ -96,7 +116,6 @@ const schema = gql`
     nanos: Int
   }
 
-
   ######################################################################
   # Miscellaneous
   ######################################################################
@@ -108,6 +127,13 @@ const schema = gql`
     url: String!
   }
 
+  type MetaData {
+    createdAt: GraphQLDateTime
+    createdBy: String
+    lastUpdatedAt: GraphQLDateTime
+    lastUpdatedBy: String
+  }
+
   ######################################################################
   # Queries and Mutations
   ######################################################################
@@ -117,8 +143,12 @@ const schema = gql`
     user: User
     file: Transcription
 
-    # Org
+    # Organization
     organization(organizationId: String): Organization
+
+    # Project
+    project(projectId: String): Project
+    projects: [Project]
   }
 
   type Mutation {
@@ -135,13 +165,17 @@ const schema = gql`
 
     # Miscellaneous
     uploadFiles(files: [Upload!]!): [File!]!
+
+    # Project
+    createProject(project: ProjectInput!): Project
   }
 `;
 
 export const resolvers = merge(
   userResolvers,
-  fileResolvers,
   organizationResolvers,
+  projectResolvers,
+  fileResolvers,
   fileUploadResolvers,
 );
 

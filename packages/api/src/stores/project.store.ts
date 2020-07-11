@@ -44,9 +44,9 @@ export default class ProjectStore {
     }
   }
 
-  public async list(userId: string): Promise<IProject[]> {
+  public async list(organizationId: string): Promise<IProject[]> {
     try {
-      return await Project.find(userId ? { userId } : null);
+      return await Project.find({ organizationId });
     } catch (e) {
       console.error(e);
       return Promise.reject(new ProjectStore.OPERATION_UNSUCCESSFUL());

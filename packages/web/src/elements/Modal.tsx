@@ -2,9 +2,9 @@ import React, { ReactNode } from "react";
 import styled from "styled-components";
 import { Colors } from "../styles/Colors";
 
-interface StyledModalProps {}
+interface ContainerProps {}
 
-const StyledModal = styled.div<StyledModalProps>`
+const Container = styled.div<ContainerProps>`
   position: relative;
   height: auto;
   width: auto;
@@ -34,9 +34,9 @@ export default function Button({
   children,
 }: ModalProps) {
   return (
-    <StyledModal>
+    <Container>
       <Header>{title && <Title>{title}</Title>}</Header>
       {children}
-    </StyledModal>
+    </Container>
   );
 }

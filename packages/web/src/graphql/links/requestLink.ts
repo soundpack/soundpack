@@ -9,6 +9,7 @@ const request = (operation: Operation) => {
   return new Promise(async (resolve, reject) => {
     const headers: IHeaders = {};
     const token = await Auth.getToken();
+    console.log(token);
     if (token) {
       headers.authorization = `Bearer ${token}`;
     }

@@ -122,7 +122,7 @@ export const ModalContainer = styled(CardPop)<ModalContainerProps>`
   position: relative;
   height: ${(props) => props.height};
   width: ${(props) => props.width};
-  border-radius: 10px;
+  border-radius: 5px;
   background-color: ${Colors.White};
   overflow: visible;
 `;
@@ -135,7 +135,7 @@ const ModalHeaderContainer = styled.div`
   justify-content: space-between;
   height: 49px;
   padding: 0 20px;
-  border-radius: 10px 10px 0px 0px;
+  border-radius: 5px 5px 0px 0px;
   background-color: ${Colors.White};
   border-bottom: 1px solid ${Colors.Grey6};
 `;
@@ -183,7 +183,7 @@ type ModalContentHeight = {
 export const ModalContent = styled.div<ModalContentHeight>`
   position: relative;
   padding: 20px;
-  background-color: ${Colors.WhiteSmoke};
+  /* background-color: ${Colors.WhiteSmoke}; */
   height: ${(props) => props.height};
 `;
 
@@ -193,9 +193,9 @@ export const ModalFooter = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  height: 49px;
+  height: 59px;
   padding: 0 20px;
   background-color: ${Colors.White};
   border-top: 1px solid ${Colors.Grey6};
-  border-radius: 0px 0px 10px 10px;
+  border-radius: 0px 0px 5px 5px;
 `;

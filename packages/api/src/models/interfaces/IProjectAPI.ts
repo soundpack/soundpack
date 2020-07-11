@@ -44,7 +44,7 @@ export interface IUpdateProjectResponse extends IResponse {
 ********************************************************************************/
 
 export interface IListProjectsRequest extends IAuthorizedRequest {
-  userId: string;
+  organizationId: string;
 }
 
 export interface IListProjectsResponse extends IResponse {

@@ -41,6 +41,7 @@ const schema = Joi.object({
 type LoginPageProps = {};
 
 const LoginPage: React.FC<LoginPageProps> = () => {
+  /* State */
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -50,6 +51,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
     password: null,
   });
 
+  /* Actions */
   const eventHandler = makeEventHandler(() => setError(""));
 
   const setFieldErrors = (field: string, message: string | null) => {
@@ -69,6 +71,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
     setPassword(value);
   });
 
+  /* GraphQL */
   const [loginMutation, { loading }] = useMutation(LOGIN, {
     variables: {
       email,
@@ -105,6 +108,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
     loginMutation();
   };
 
+  /* Render */
   return (
     <AuthLayout
       title="Login"
