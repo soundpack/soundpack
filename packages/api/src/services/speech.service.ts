@@ -53,15 +53,15 @@ export default class SpeechService {
     };
 
     // Detects speech in the audio file
-    const [operation] = await this.client.longRunningRecognize(request);
-    const [response] = await operation.promise();
+    // const [operation] = await this.client.longRunningRecognize(request);
+    // const [response] = await operation.promise();
 
-    fs.writeFileSync('/Users/samheutmaker/desktop/juice/src/soundpack/files/results1.json', JSON.stringify(response));
+    // fs.writeFileSync('/Users/samheutmaker/desktop/juice/src/soundpack/files/results1.json', JSON.stringify(response));
 
-    const transcription = response.results
-      .map(result => result.alternatives[0].transcript)
-      .join('\n');
-    console.log(`Transcription: ${transcription}`);
+    // const transcription = response.results
+    //   .map(result => result.alternatives[0].transcript)
+    //   .join('\n');
+    // console.log(`Transcription: ${transcription}`);
 
   }
 

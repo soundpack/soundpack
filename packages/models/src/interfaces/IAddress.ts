@@ -1,3 +1,5 @@
+import IMetaData from "./IMetaData";
+
 export default interface IAddress {
   address1?: string;
   address2?: string;
@@ -10,4 +12,5 @@ export default interface IAddress {
   lng?: number | null;
   placeId?: string;
   timezone?: string;
+  meta?: IMetaData;
 }

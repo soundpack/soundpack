@@ -79,8 +79,10 @@ export default class ProjectController implements IProjectAPI {
     * Save the project to storage
     */
     const now = Date.now();
-    project.createdAt = now;
-    project.lastUpdatedAt = now;
+    project.meta = {
+      createdAt: now,
+      lastUpdatedAt: now,
+    };
 
     try {
       const newProject = await this.storage.create(project);
@@ -119,7 +121,7 @@ export default class ProjectController implements IProjectAPI {
       return response;
     }
 
-    project.lastUpdatedAt = Date.now();
+    project.meta.lastUpdatedAt = Date.now();
 
     try {
       const newProject = await this.storage.update(userId, project);

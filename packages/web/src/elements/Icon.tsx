@@ -1,7 +1,7 @@
 import React from 'react';
+import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Colors } from "../styles/Colors";
-
 
 import { faUserFriends as AudienceRegular } from "@fortawesome/pro-regular-svg-icons";
 import { faCashRegister as BoxOfficeRegular } from "@fortawesome/pro-regular-svg-icons";
@@ -195,10 +195,21 @@ export const Icons = {
   UpgradeSolid,
 };
  
+const Container = styled.div<any>`
+  color: ${(props) => props.color};
+
+  &:hover {
+    color: ${(props) => {
+      if (props.color === "inherit") return null;
+      return props.hoverColor;
+    }};
+  }
+`;
 
 export type IconProps = {
   icon: any;
   color?: Colors | string | null;
+  hoverColor?: Colors | string | null;
   onClick?: any | null;
   size?: string | number | undefined;
   position?: string;
@@ -206,35 +217,48 @@ export type IconProps = {
   left?: string | number | undefined;
   right?: string | number | undefined;
   zIndex?: number | void;
+  margin?: string | number | undefined;
+  tip?: string;
+  transitionDuration?: string;
+  rotation?: number;
 };
 
-export default function Icon({ 
+export default function Icon({
   icon = Icons.AudienceRegular,
   color = Colors.Blue,
-  onClick = () => {},
+  hoverColor = null,
+  onClick,
   size = 20,
   top,
   left,
   right,
-  position = 'relative' as any,
+  position = "relative" as any,
   zIndex,
+  margin,
+  tip,
+  transitionDuration,
+  rotation,
 }: IconProps) {
+  const cursor: string = onClick ? "pointer" : "";
 
   return (
-    <FontAwesomeIcon
-      icon={icon as any}
-      onClick={onClick}
-      style={{
-        color: color as any,
-        top,
-        left,
-        right,
-        position: position as any,
-        zIndex: zIndex as any,
-        fontSize: size,
-        transition: "all 0.2s"
-      }}
-    />
+    <Container color={color} hoverColor={hoverColor} data-tip={tip}>
+      <FontAwesomeIcon
+        icon={icon as any}
+        onClick={onClick}
+        style={{
+          top,
+          left,
+          right,
+          position: position as any,
+          zIndex: zIndex as any,
+          fontSize: size,
+          transition: `all ${transitionDuration || "0.2s"}`,
+          transform: rotation ? `rotate(${rotation}deg)` : undefined,
+          margin,
+          cursor,
+        }}
+      />
+    </Container>
   );
 }
-

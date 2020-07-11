@@ -1,3 +1,5 @@
+import IMetaData from "./IMetaData";
+
 export default interface IUser {
   _id?: string;
   firstName: string;
@@ -6,10 +8,10 @@ export default interface IUser {
   phoneNumber?: string;
   password?: string;
   passwordHash?: string;
-  createdAt?: number;
   organizationId: string | null;
   verifyEmailCode?: string | null;
   emailVerifiedAt?: number;
   resetPasswordCode?: string | null;
   resetPasswordCodeSetAt?: number;
-}
+  meta?: IMetaData;
+};

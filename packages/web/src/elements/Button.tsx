@@ -20,12 +20,13 @@ type StyledButtonProps = {
   onClick?: any;
   margin?: string;
   padding?: string;
+  width?: string;
 }
 
 const StyledButton = styled.div<StyledButtonProps>`
   position: relative;
   height: 40px;
-  width: 100%;
+  width: ${props => props.width};
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -101,6 +102,7 @@ export type ButtonProps = {
   icon?: string;
   margin?: string;
   padding?: string;
+  width?: string;
   loading?: boolean;
 };
 
@@ -112,7 +114,9 @@ export default function Button({
   icon,
   margin,
   padding,
+  width = '100%',
   loading = false,
+  
 }: ButtonProps) {
   return (
     <StyledButton
@@ -120,6 +124,7 @@ export default function Button({
       onClick={loading ? null : () => onClick() }
       margin={margin}
       padding={padding}
+      width={width}
     >
       {(() => {
         return (

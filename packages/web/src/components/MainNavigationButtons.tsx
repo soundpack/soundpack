@@ -3,39 +3,12 @@ import styled, { css } from "styled-components";
 import * as Polished from 'polished';
 import { useQuery } from '@apollo/react-hooks';
 import { Link, useLocation } from "react-router-dom";
-// import IS_SUPER_USER from '@sellout/models/.dist/graphql/queries/isSuperUser.query';
 import { Colors } from '../styles/Colors';
 import Icon, { Icons } from '../elements/Icon';
 
 type SideNavigationButtonProps = {
   active: number;
 };
-
-const buttonCss = css<SideNavigationButtonProps>`
-  position: relative;
-  height: 35px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  text-decoration: none;
-  padding: 0 10px;
-  margin-bottom: 15px;
-  border-radius: 5px;
-  transition: all 0.1s;
-  color: ${(props) =>
-    props.active ? Colors.White : Polished.rgba(Colors.White, 0.7)};
-  background-color: ${(props) =>
-    props.active ? Polished.rgba(Colors.White, 0.1) : null};
-
-  &:hover {
-    cursor: pointer;
-    color: ${(props) =>
-      props.active ? Colors.White : Polished.rgba(Colors.White, 0.8)};
-    background-color: ${Polished.rgba(Colors.White, 0.1)};
-  }
-`;
-
 
 const SideNavigationLinkButton = styled(Link)<SideNavigationButtonProps>`
   position: relative;

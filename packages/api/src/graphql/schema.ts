@@ -6,6 +6,7 @@ import { GraphQLDateTime } from 'graphql-iso-date';
 import userResolvers from "./resolvers/user.resolvers";
 import fileUploadResolvers from "./resolvers/fileUpload.resolvers";
 import organizationResolvers from "./resolvers/organization.resolvers";
+import fileResolvers from "./resolvers/file.resolvers";
 
 const schema = gql`
   scalar Upload
@@ -67,6 +68,36 @@ const schema = gql`
   }
 
   ######################################################################
+  # Transcription
+  ######################################################################
+
+  type Transcription {
+    results: [Result]
+  }
+
+  type Result {
+    alternatives: [Alternative]
+  }
+
+  type Alternative {
+    transcript: String
+    confidence: Float
+    words: [Word]
+  }
+
+  type Word {
+    startTime: Time
+    endTime: Time
+    word: String
+  }
+
+  type Time {
+    seconds: String
+    nanos: Int
+  }
+
+
+  ######################################################################
   # Miscellaneous
   ######################################################################
 
@@ -84,6 +115,7 @@ const schema = gql`
   type Query {
     # User
     user: User
+    file: Transcription
 
     # Org
     organization(organizationId: String): Organization
@@ -108,6 +140,7 @@ const schema = gql`
 
 export const resolvers = merge(
   userResolvers,
+  fileResolvers,
   organizationResolvers,
   fileUploadResolvers,
 );

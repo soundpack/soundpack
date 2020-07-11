@@ -1,6 +1,9 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
+import PageLoader from './components/PageLoader';
+import ReactTooltip from "react-tooltip";
+import Modal from './components/modal/Modal';
 // Auth
 import Login from './pages/Login.page';
 import Register from "./pages/Register.page";
@@ -10,8 +13,7 @@ import VerifyEmail from "./pages/VerifyEmail.page";
 //Dasbhoard
 import DashboardLayout from './components/DashboardLayout';
 import ProjectList from './pages/ProjectList.page';
-import Loader, { LoaderSizes } from './elements/Loader';
-import { Colors } from './styles/Colors';
+
 
 const Container = styled.div`
   position: absolute;
@@ -19,39 +21,10 @@ const Container = styled.div`
   width: 100%;
 `;
 
-type PageLoaderProps = {
-  fade: boolean;
-};
-
-const PageLoaderContainer = styled.div<PageLoaderProps>`
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: ${Colors.White};
-  z-index: 1000;
-  visibility: ${props => (props.fade ? "hidden" : null)};
-  opacity: ${props => (props.fade ? 0 : null)};
-  transition: ${props =>
-    props.fade ? "visibility 0.2s 0.2s, opacity 0.2s ease-out" : null};
+const Tooltip = styled(ReactTooltip)`
+  border-radius: 10px;
+  padding: 7px 10px;
 `;
-
-function PageLoader() {
-  const [fade, setFade] = useState(false);
-
-  useEffect(() => {
-    setTimeout(() => setFade(true), 1000);
-  }, []);
-
-
-  return (
-    <PageLoaderContainer fade={fade}>
-      <Loader size={LoaderSizes.Large} color={Colors.Blue} />
-    </PageLoaderContainer>
-  );
-}
 
 function DashboardContainer({ match }: any) {
   return (
@@ -67,24 +40,12 @@ function DashboardContainer({ match }: any) {
   );
 }
 
-// function AuthContainer({ match }: any) {
-//  return (
-//    <AccountLayout>
-//      <Switch>
-//        <div>This is the account</div>
-//      </Switch>
-//    </AccountLayout>
-//  );
-// }
-
-export default function App() {
-  useEffect(() => {
-    // Checkout.initialize();
-  }, []);
-  
+export default function App() {  
   return (
     <Fragment>
-      {/* <PageLoader /> */}
+      <Tooltip />
+      <Modal />
+      <PageLoader />
       <Container>
         <Switch>
           <Redirect exact from="/" to="/login" />

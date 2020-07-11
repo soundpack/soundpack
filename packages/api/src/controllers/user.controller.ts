@@ -113,8 +113,10 @@ export default class UserController implements IUserAPI {
       firstName,
       lastName,
       phoneNumber,
-      createdAt: Date.now(),
-      organizationId: null
+      organizationId: null,
+      meta: {
+        createdAt: Date.now(),
+      }
     };
 
     let user: IUser;
