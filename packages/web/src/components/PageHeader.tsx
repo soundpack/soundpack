@@ -12,7 +12,6 @@ const Container = styled.div`
   padding: 0 20px;
   border-bottom: 3px solid ${Colors.Grey6};
   background-color: ${Colors.White};
-  width: 100%;
 `;
 
 type PageHeaderProps = {

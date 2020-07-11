@@ -5,16 +5,21 @@ import { Colors } from "../styles/Colors";
 
 const Container = styled.div`
   position: absolute;
-  display: flex;
   height: 100vh;
   width: 100vw;
 `;
 
-const Content = styled.div`
-  background-color: ${Colors.White};
+const ContentContainer = styled.div`
+  display: flex;
   width: 100%;
   height: 100%;
+`;
+
+const Content = styled.div`
+  background: ${Colors.White};
+  height: 100%;
   overflow: scroll;
+  width: calc(100% - 225px);
 `;
 
 type DashboardLayoutProps = {
@@ -24,8 +29,10 @@ type DashboardLayoutProps = {
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   return (
     <Container>
-      <MainNavigation />
-      <Content>{children}</Content>
+      <ContentContainer>
+        <MainNavigation />
+        <Content>{children}</Content>
+      </ContentContainer>
     </Container>
   );
 };
