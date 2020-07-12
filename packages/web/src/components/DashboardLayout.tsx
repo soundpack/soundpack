@@ -18,7 +18,7 @@ const ContentContainer = styled.div`
 const Content = styled.div`
   background: ${Colors.White};
   height: 100%;
-  overflow: scroll;
+  overflow: hidden;
   width: calc(100% - 225px);
 `;
 

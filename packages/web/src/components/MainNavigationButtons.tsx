@@ -99,7 +99,7 @@ const SideNavigationButtons: React.FC<SideNavigationButtonsProps> = () => {
       // activeIcon: Icons.DashboardSolid,
       iconSize: "2.4rem",
       iconMargin: "0px 0 -4px",
-      active: ["/dashboard/projects"]
+      active: ["/dashboard/projects", "/dashboard/projects/details"],
     },
     {
       text: "Team Members",
@@ -108,9 +108,7 @@ const SideNavigationButtons: React.FC<SideNavigationButtonsProps> = () => {
       // activeIcon: Icons.CalendarStarSolid,
       iconSize: "2.4rem",
       iconMargin: "0px 0 -4px",
-      active: [
-        "/dashboard/settings/team",
-      ]
+      active: ["/dashboard/settings/team"],
     },
     {
       text: "Billing",
@@ -119,11 +117,8 @@ const SideNavigationButtons: React.FC<SideNavigationButtonsProps> = () => {
       // activeIcon: Icons.CalendarStarSolid,
       iconSize: "2.4rem",
       iconMargin: "0px 0 -4px",
-      active: [
-        "/dashboard/settings/billing",
-      ]
+      active: ["/dashboard/settings/billing"],
     },
-  
   ];
 
   const superUser = {

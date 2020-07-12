@@ -1,11 +1,10 @@
 import {
   AppActionTypes,
   AppActionCreatorTypes,
-  SetSearchQueryAction,
+  SetProjectIdAction,
   PushModalAction,
   PopModalAction,
   PushModalConfirmActionAction,
-  SetRoleIdAction,
   SetFileUploadAction,
   StartFileUploadAction,
   FinishFileUploadAction,
@@ -42,21 +41,18 @@ const confirmActionState = (): IConfirmAction => {
 };
 
 export type AppReducerState = {
-  intercomEnabled: boolean;
-  searchOpen: boolean;
-  searchQuery: string;
-  sideBarQuery: string;
+  projectId: string;
   modals: ModalTypes[];
   fileUpload: IFileUpload;
   error: ErrorState;
   saveChanges: ISaveChanges;
   confirmAction: IConfirmAction;
-  roleId: string;
+  intercomEnabled: boolean;
 };
 
 function appReducerState(): AppReducerState {
   const { query } = UrlUtil.parse(window.location.toString());
-  const { modalType = "" }: UrlParams = query;
+  const { projectId = '', modalType = "" }: UrlParams = query;
 
   const isSafeModal = Object.values(urlSafeModalTypes).includes(
     modalType as ModalTypes
@@ -68,16 +64,13 @@ function appReducerState(): AppReducerState {
   }
 
   return {
-    intercomEnabled: false,
-    searchOpen: false,
-    searchQuery: "",
-    sideBarQuery: "",
+    projectId,
     modals,
     fileUpload: fileUploadState(),
     error: errorState(),
     saveChanges: saveChangesState(),
     confirmAction: confirmActionState(),
-    roleId: "",
+    intercomEnabled: false,
   };
 }
 
@@ -88,9 +81,11 @@ export default function reducer(
   const { type, payload } = action;
 
   switch (type) {
-    case AppActionTypes.SET_SEARCH_QUERY:
-      return setSearchQuery(state, payload as SetSearchQueryAction["payload"]);
-
+    case AppActionTypes.SET_PROJECT_ID:
+      return setProjectId(
+        state,
+        payload as SetProjectIdAction["payload"],
+      )
     case AppActionTypes.PUSH_MODAL:
       return pushModal(state, payload as PushModalAction["payload"]);
 
@@ -102,9 +97,6 @@ export default function reducer(
         state,
         payload as PushModalConfirmActionAction["payload"]
       );
-
-    case AppActionTypes.SET_ROLE_ID:
-      return setRoleId(state, payload as SetRoleIdAction["payload"]);
 
     case AppActionTypes.SET_FILE_UPLOAD:
       return setFileUpload(state, payload as SetFileUploadAction["payload"]);
@@ -130,16 +122,16 @@ export default function reducer(
 }
 
 /********************************************************************************
- *  Set Search Query
+ *  Set Id
  *******************************************************************************/
-
-function setSearchQuery(
+function setProjectId(
   state: AppReducerState,
-  { searchQuery }: { searchQuery: string }
+  { projectId }: { projectId: string }
 ): AppReducerState {
+  UrlUtil.setQueryString({ projectId });
   return {
     ...state,
-    searchQuery,
+    projectId,
   };
 }
 
@@ -182,19 +174,6 @@ function pushModalConfirmAction(
   state = pushModal(state, { modalType: ModalTypes.ConfirmAction });
   state.confirmAction = confirmAction;
   return state;
-}
-/********************************************************************************
- *  Set Role
- *******************************************************************************/
-
-function setRoleId(
-  state: AppReducerState,
-  { roleId }: { roleId: string }
-): AppReducerState {
-  return {
-    ...state,
-    roleId,
-  };
 }
 
 /********************************************************************************

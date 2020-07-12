@@ -1,35 +1,30 @@
 import React, { useEffect } from 'react';
 import { Link, Route } from 'react-router-dom';
 import styled from 'styled-components';
-// import ProjectAudience from '../pages/ProjectAudience.page.';
+import ProjectFiles from '../pages/ProjectFiles.page';
 // import ProjectOrders from '../pages/ProjectOrders.page';
 
 const Container = styled.div`
-  background-color: blue;
+  /* background-color: blue; */
 `;
 
 const Header = styled.div`
   height: 200px;
-  background-color: pink;
 `;
 
 const Content = styled.div`
 `;
 
-type ProjectDetailalsContainerProps = {
+type ProjectDetailsContainerProps = {
   match: any;
 };
 
-const ProjectDetailsContainer: React.FC<ProjectDetailalsContainerProps> = ({ match }) =>{
+const ProjectDetailsContainer: React.FC<ProjectDetailsContainerProps> = ({ match }) =>{
   return (
     <Container>
-      <Header>
-        <Link to={`${match.path}/projects`}>Projects</Link>
-        <Link to={`${match.path}/audience`}></Link>
-      </Header>
       <Content>
-        {/* <Route path={`${match.url}/audience`} component={ProjectAudience} />
-        <Route path={`${match.url}/orders`} component={ProjectOrders} /> */}
+        <Route path={`${match.url}/details`} component={ProjectFiles} />
+        {/* <Route path={`${match.url}/orders`} component={ProjectOrders} /> */}
       </Content>
     </Container>
   );

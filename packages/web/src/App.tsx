@@ -13,6 +13,7 @@ import VerifyEmail from "./pages/VerifyEmail.page";
 //Dasbhoard
 import DashboardLayout from './components/DashboardLayout';
 import ProjectList from './pages/ProjectList.page';
+import ProjectDetailsContainer from './containers/ProjectDetails.container';
 
 
 const Container = styled.div`
@@ -32,6 +33,7 @@ function DashboardContainer({ match }: any) {
       <Switch>
         <Redirect exact from={`${match.path}/`} to={`${match.path}/projects`} />
         <Route exact path={`${match.path}/projects`} component={ProjectList} />
+        <Route path={`${match.path}/projects`} component={ProjectDetailsContainer} />
         {/* <Route path={`${match.path}/events`} component={EventDetailsContainer} />
         <Route path={`${match.path}/orders`} component={OrdersContainer} />
         <Route path={`${match.path}/settings`} component={SettingsContainer} /> */}

@@ -31,7 +31,7 @@ const ErrorText = styled.div`
 `;
 
 const Spacer = styled.div`
-  height: 30px;
+  height: 20px;
 `;
 
 const schema = Joi.object({

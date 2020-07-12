@@ -170,7 +170,8 @@ export default class ProjectController implements IProjectAPI {
     let response: IGetProjectResponse = { status: StatusCodeEnum.UNKNOWN_CODE };
 
     const schema = Joi.object().keys({
-      projectId: Joi.string().allow(null).required(),
+      auth: authorizedSchema,
+      projectId: Joi.string().required(),
     });
 
     const params = Joi.validate(request, schema);

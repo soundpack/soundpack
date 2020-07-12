@@ -16,6 +16,7 @@ import AuthLayout, {
   Footer,
   ErrorText
 } from "../components/AuthLayout";
+import { useHistory } from 'react-router-dom';
 
 const schema = Joi.object({
   email: Schema.email().error(([error]) => {
@@ -41,6 +42,8 @@ const schema = Joi.object({
 type LoginPageProps = {};
 
 const LoginPage: React.FC<LoginPageProps> = () => {
+  /* Hooks */
+  const history = useHistory();
   /* State */
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -79,6 +82,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
     },
     onCompleted: async ({ login: { token } }) => {
       await Auth.setToken(token);
+      history.push('/dashboard/projects');
     },
     onError: async error => {
       const errorMsg = ErrorUtil.getErrorMessage(error);

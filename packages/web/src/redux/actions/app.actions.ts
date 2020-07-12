@@ -3,11 +3,10 @@ import IConfirmAction from "../../models/interfaces/IConfirmAction";
 import ISaveChanges from "../../models/interfaces/ISaveChanges";
 import IFileUpload from "../../models/interfaces/IFileUpload";
 export const AppActionTypes = {
-  SET_SEARCH_QUERY: "SET_SEARCH_QUERY",
+  SET_PROJECT_ID: "SET_PROJECT_ID",
   PUSH_MODAL: "PUSH_MODAL",
   POP_MODAL: "POP_MODAL",
   PUSH_MODAL_CONFIRM_ACTION: "PUSH_MODAL_CONFIRM_ACTION",
-  SET_ROLE_ID: "SET_ROLE_ID",
   SET_FILE_UPLOAD: "SET_FILE_UPLOAD",
   START_FILE_UPLOAD: "START_FILE_UPLOAD",
   FINISH_FILE_UPLOAD: "FINISH_FILE_UPLOAD",
@@ -19,7 +18,7 @@ export const AppActionTypes = {
  *******************************************************************************/
 
 export type AppActionCreatorTypes =
-  | SetSearchQueryAction
+  | SetProjectIdAction
   | PushModalAction
   | PopModalAction
   | PushModalConfirmActionAction
@@ -29,21 +28,21 @@ export type AppActionCreatorTypes =
   | SetSaveChangesAction;
 
 /********************************************************************************
- *  Set Search Query
+ *  Set Id
  *******************************************************************************/
 
-export interface SetSearchQueryAction {
-  type: typeof AppActionTypes.SET_SEARCH_QUERY;
+export interface SetProjectIdAction {
+  type: typeof AppActionTypes.SET_PROJECT_ID;
   payload: {
-    searchQuery: string;
+    projectId: string;
   };
 }
 
-export function setSearchQuery(searchQuery: string): SetSearchQueryAction {
+export function setProjectId(projectId: string): SetProjectIdAction {
   return {
-    type: AppActionTypes.SET_SEARCH_QUERY,
+    type: AppActionTypes.SET_PROJECT_ID,
     payload: {
-      searchQuery,
+      projectId,
     },
   };
 }
@@ -98,26 +97,6 @@ export function popModal(): PopModalAction {
   return {
     type: AppActionTypes.POP_MODAL,
     payload: {},
-  };
-}
-
-/********************************************************************************
- *  roleId for Modal
- *******************************************************************************/
-
-export interface SetRoleIdAction {
-  type: typeof AppActionTypes.SET_ROLE_ID;
-  payload: {
-    roleId: string;
-  };
-}
-
-export function setRoleId(roleId: string): SetRoleIdAction {
-  return {
-    type: AppActionTypes.SET_ROLE_ID,
-    payload: {
-      roleId,
-    },
   };
 }
 

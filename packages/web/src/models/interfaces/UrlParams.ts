@@ -1,4 +1,5 @@
 export default interface UrlParams {
-  code?: string;
+  projectId?: string;
   modalType?: string;
+  code?: string;
 }

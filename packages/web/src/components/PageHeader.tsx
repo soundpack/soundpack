@@ -10,7 +10,7 @@ const Container = styled.div`
   align-items: center;
   height: 70px;
   padding: 0 20px;
-  border-bottom: 3px solid ${Colors.Grey6};
+  border-bottom: 1px solid ${Colors.Grey6};
   background-color: ${Colors.White};
 `;
 
