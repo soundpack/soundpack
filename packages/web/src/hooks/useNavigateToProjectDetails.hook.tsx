@@ -17,7 +17,7 @@ const useNavigateToProjectDetails: NavigateToProjectDetailsHook = () => {
 
   const createProject = React.useCallback((projectId, eventType = false) => {
     setProjectId(projectId);
-    history.push(`/dashboard/projects/details`);
+    history.push(`/dashboard/projects/details?projectId=${projectId}`);
   }, []);
 
   /** Return */

@@ -7,12 +7,15 @@ import { Provider as ReduxProvider } from 'react-redux';
 import App from './App';
 import client from './graphql/client';
 import store from './redux/store';
+// import { AudioPlayerProvider } from "react-use-audio-player";
 
 ReactDOM.render(
   <ApolloProvider client={client}>
     <ReduxProvider store={store}>
       <BrowserRouter>
-        <App />
+        {/* <AudioPlayerProvider> */}
+          <App />
+        {/* </AudioPlayerProvider> */}
       </BrowserRouter>
     </ReduxProvider>
   </ApolloProvider>,

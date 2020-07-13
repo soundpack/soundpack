@@ -7,12 +7,14 @@ import * as Polished from "polished";
 import { SoundpackState } from "../../redux/store";
 import { FadeIn, CardPop } from "../../elements/Motion";
 import CreateProjectModal from "./CreateProjectModal";
+import UploadFilesModal from "./UploadFilesModal";
 
 export enum ModalTypes {
   CreateProject = "CreateProject",
   SaveChanges = "SaveChanges",
   ConfirmAction = "ConfirmAction",
   ImageCropper = "ImageCropper",
+  UploadFiles = "UploadFiles",
 }
 
 export const urlSafeModalTypes = {}
@@ -27,6 +29,7 @@ const positions = {
   [ModalTypes.SaveChanges]: ModalPositions.Top,
   [ModalTypes.ConfirmAction]: ModalPositions.Top,
   [ModalTypes.ImageCropper]: ModalPositions.Top,
+  [ModalTypes.UploadFiles]: ModalPositions.Top,
 };
 
 /********************************************************************************
@@ -101,6 +104,8 @@ const RenderModal: React.FC<RenderModalProps> = ({ modal, active }) => {
         switch (modal) {
           case ModalTypes.CreateProject:
             return <CreateProjectModal />;
+          case ModalTypes.UploadFiles:
+            return <UploadFilesModal />;
           default:
             return <div />;
         }

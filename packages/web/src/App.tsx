@@ -15,7 +15,6 @@ import DashboardLayout from './components/DashboardLayout';
 import ProjectList from './pages/ProjectList.page';
 import ProjectDetailsContainer from './containers/ProjectDetails.container';
 
-
 const Container = styled.div`
   position: absolute;
   height: 100%;

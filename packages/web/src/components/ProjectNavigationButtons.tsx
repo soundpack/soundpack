@@ -23,15 +23,15 @@ const SideNavigationLinkButton = styled(Link)<SideNavigationButtonProps>`
   border-radius: 5px;
   transition: all 0.1s;
   color: ${(props) =>
-    props.active ? Colors.White : Polished.rgba(Colors.White, 0.7)};
+    props.active ? Colors.DarkBlue : Colors.Grey1};
   background-color: ${(props) =>
-    props.active ? Polished.rgba(Colors.White, 0.1) : null};
+    props.active ? Colors.BlueHighlight : null};
 
   &:hover {
     cursor: pointer;
     color: ${(props) =>
-      props.active ? Colors.White : Polished.rgba(Colors.White, 0.8)};
-    background-color: ${Polished.rgba(Colors.White, 0.1)};
+      props.active ? Colors.DarkBlue : Colors.Grey1};
+    background-color: ${Colors.BlueHighlight};
   }
 `;
 
@@ -88,18 +88,17 @@ const BottomContainer = styled.div`
 type SideNavigationButtonsProps = {};
 
 const SideNavigationButtons: React.FC<SideNavigationButtonsProps> = () => {
-  // const { data } = useQuery(IS_SUPER_USER);
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
 
   const buttons: any[] = [
     {
-      text: "Projects",
-      link: "/dashboard/projects",
+      text: "Files",
+      link: "/dashboard/projects/details",
       // icon: Icons.DashboardRegular,
       // activeIcon: Icons.DashboardSolid,
       iconSize: "2.4rem",
       iconMargin: "0px 0 -4px",
-      active: ["/dashboard/projects", "/dashboard/projects/details"],
+      active: ["/dashboard/projects/details"],
     },
     {
       text: "Team Members",
@@ -167,7 +166,10 @@ const SideNavigationButtons: React.FC<SideNavigationButtonsProps> = () => {
           return (
             <SideNavigationLinkButton
               key={i}
-              to={b.link}
+              to={{
+                pathname: b.link,
+                search: search,
+              }}
               active={active ? 1 : 0}
             >
               {/* <Icon 
@@ -179,7 +181,7 @@ const SideNavigationButtons: React.FC<SideNavigationButtonsProps> = () => {
                 <Icon
                   size={14}
                   icon={Icons.RightChevron}
-                  color={Colors.White}
+                  color={Colors.DarkBlue}
                 />
               )}
             </SideNavigationLinkButton>

@@ -16,6 +16,10 @@ import { faTrash as DeleteRegular } from "@fortawesome/pro-regular-svg-icons";
 import { faDollarSign as Dollar } from "@fortawesome/pro-regular-svg-icons";
 import { faArrowAltDown as DownArrow } from "@fortawesome/pro-regular-svg-icons";
 import { faFileDownload as DownloadReport } from "@fortawesome/pro-regular-svg-icons";
+import { faPlay as Play } from "@fortawesome/pro-solid-svg-icons";
+import { faPause as Pause } from "@fortawesome/pro-solid-svg-icons";
+import { faFastForward as Forward } from "@fortawesome/pro-solid-svg-icons";
+import { faFastBackward as Backward } from "@fortawesome/pro-solid-svg-icons";
 import { faCode as Embed } from "@fortawesome/pro-regular-svg-icons";
 import { faFileExport as Export } from "@fortawesome/pro-regular-svg-icons";
 import { faUsdSquare as FeeRegular } from "@fortawesome/pro-regular-svg-icons";
@@ -100,6 +104,10 @@ import { faArrowAltSquareUp as UpgradeSolid } from "@fortawesome/pro-solid-svg-i
 // import { library } from "@fortawesome/fontawesome-svg-core";
 
 export const Icons = {
+  Play,
+  Pause,
+  Forward,
+  Backward,
   AudienceRegular,
   BoxOfficeRegular,
   CalculatorRegular,

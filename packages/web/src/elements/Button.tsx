@@ -60,7 +60,7 @@ const StyledButton = styled.div<StyledButtonProps>`
   }
 
   &:active {
-    top: ${props => props.onClick ? '1px' : null};
+    /* top: ${props => props.onClick ? '1px' : null}; */
     cursor: ${props => props.onClick ? 'pointer' : null};
     background-color: ${props => {
       if (props.onClick && props.type === ButtonTypes.Submit) {
