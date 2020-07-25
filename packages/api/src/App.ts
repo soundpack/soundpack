@@ -1,15 +1,13 @@
-import express, { Application } from 'express';
+import express, { Application } from "express";
 import { ApolloServer } from "apollo-server-express";
-import compression from 'compression';
-import { json } from 'body-parser';
-import { connect } from 'mongoose';
-import authenticate from './util/middleware/authenticate';
-import cors from './util/middleware/cors';
-import { executableSchema as schema } from './graphql/schema';
-import {
-  MONGO_DB_HOST,
-  MONGO_DB_PORT,
-} from './env';
+import compression from "compression";
+import { json } from "body-parser";
+import { connect } from "mongoose";
+import authenticate from "./util/middleware/authenticate";
+import cors from "./util/middleware/cors";
+import { executableSchema as schema } from "./graphql/schema";
+import { graphqlUploadExpress } from "graphql-upload";
+import { MONGO_DB_HOST, MONGO_DB_PORT } from "./env";
 
 export default class App {
   public app: Application;
@@ -30,10 +28,10 @@ export default class App {
       useNewUrlParser: true,
     })
       .then(() => {
-        console.log('Connected to MongoDB...');
+        console.log("Connected to MongoDB...");
       })
-      .catch(e => {
-        console.error('There was an error connecting to MongoDB:');
+      .catch((e) => {
+        console.error("There was an error connecting to MongoDB:");
         console.error(e);
       });
   }
@@ -43,19 +41,21 @@ export default class App {
     this.app.use(cors);
     this.app.use(json());
     this.app.use(authenticate);
+    this.app.use(graphqlUploadExpress());
   }
 
   private initializeApollo() {
     const server = new ApolloServer({
+      uploads: false,
       schema,
-      context: req => ({
+      context: (req) => ({
         req: req.req,
         res: req.res,
-      })
+      }),
     });
 
-    this.app.get('/', (_, res) => {
-      res.status(200).send('OK');
+    this.app.get("/", (_, res) => {
+      res.status(200).send("OK");
     });
 
     server.applyMiddleware({ app: this.app });

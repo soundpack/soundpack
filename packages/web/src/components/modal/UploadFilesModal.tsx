@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Joi from "@hapi/joi";
 import { useMutation } from "@apollo/react-hooks";
 import CREATE_PROJECT from "../../graphql/mutations/createProject.mutation";
-import LIST_PROJECTS from "../../graphql/queries/projects.query";
+import UPLOAD_FILES from "../../graphql/mutations/uploadFiles.mutation";
 import { useDispatch } from "react-redux";
 import * as AppActions from "../../redux/actions/app.actions";
 import * as ErrorUtil from "../../utils/ErrorUtil";
@@ -12,16 +12,16 @@ import Button, { ButtonTypes } from "../../elements/Button";
 import { useDropzone } from "react-dropzone";
 import Icon, { Icons } from "../../elements/Icon";
 import { Colors } from "../../styles/Colors";
-import * as Polished from 'polished';
-import moment from 'moment';
-import Loader from '../../elements/Loader';
+import * as Polished from "polished";
+import moment from "moment";
+import Loader from "../../elements/Loader";
 import {
   ModalContainer,
   ModalHeader,
   ModalContent,
   ModalFooter,
 } from "./Modal";
-import AudioFileRow from '../AudioFileRow';
+import AudioFileRow from "../AudioFileRow";
 
 const Container = styled.div`
   width: 600px;
@@ -45,7 +45,7 @@ const Dropzone = styled.div`
   }
 
   &:focus {
-    outline: none; 
+    outline: none;
   }
 
   &:active {
@@ -91,21 +91,10 @@ const Spacer = styled.div`
 `;
 
 const schema = Joi.object({
-  name: Joi.string()
+  files: Joi.array()
     .required()
     .error(([error]) => {
-      const message = "Project name is invalid";
-      return new Error(
-        JSON.stringify({
-          field: error.path[0],
-          message,
-        })
-      );
-    }),
-  description: Joi.string()
-    .required()
-    .error(([error]) => {
-      const message = "Project description is invalid";
+      const message = "Please select atleast one file for upload.";
       return new Error(
         JSON.stringify({
           field: error.path[0],
@@ -123,7 +112,6 @@ const UploadFilesModal: React.FC<UploadFilesModalProps> = () => {
   const [description, setDescription] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [files, setFiles] = React.useState<File[]>([]);
-
 
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrorsInternal] = useState({
@@ -155,20 +143,18 @@ const UploadFilesModal: React.FC<UploadFilesModalProps> = () => {
   });
 
   /* GraphQL */
-  const [uploadFilesMutation] = useMutation(CREATE_PROJECT, {
+  const [uploadFilesMutation] = useMutation(UPLOAD_FILES, {
     variables: {
-      project: {
-        name,
-        description,
-      },
+      files,
     },
     refetchQueries: [
-      {
-        query: LIST_PROJECTS,
-      },
+      // {
+      //   query: LIST_PROJECTS,
+      // },
     ],
     onError: async (error) => {
       const errorMsg = ErrorUtil.getErrorMessage(error);
+      console.log(errorMsg);
       setError(errorMsg);
     },
   });
@@ -179,8 +165,7 @@ const UploadFilesModal: React.FC<UploadFilesModalProps> = () => {
     }
 
     const params = schema.validate({
-      name,
-      description,
+      files,
     });
 
     const { error: schemaError } = params;
@@ -206,22 +191,22 @@ const UploadFilesModal: React.FC<UploadFilesModalProps> = () => {
     <ModalContainer>
       <ModalHeader
         title={`Upload Files ${
-          Boolean(files.length) ? `(${files.length})` : ''
+          Boolean(files.length) ? `(${files.length})` : ""
         }`}
         close={popModal}
       />
       <ModalContent>
         <Container>
           {(() => {
-            if(loading) {
+            if (loading) {
               return (
                 <Dropzone>
-                  <Loader color={Colors.Blue}/>
+                  <Loader color={Colors.Blue} />
                 </Dropzone>
               );
             }
-            
-            if(!files.length) {
+
+            if (!files.length) {
               return (
                 <Dropzone {...getRootProps()}>
                   <input {...getInputProps()} />
@@ -236,7 +221,7 @@ const UploadFilesModal: React.FC<UploadFilesModalProps> = () => {
             return (
               <AudioFiles>
                 {files.map((file: File, index) => {
-                  return <AudioFileRow key={index}  file={file} />;
+                  return <AudioFileRow key={index} file={file} />;
                 })}
               </AudioFiles>
             );

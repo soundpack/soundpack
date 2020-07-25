@@ -26,7 +26,7 @@ function getPublicUrl(filename) {
 const storage = new Storage();
 
 class FileUploadService {
-  private async uploadToStorage(buffer: Buffer, name: string): Promise<string>{
+  private async uploadToStorage(buffer: Buffer, name: string, mimetype: string): Promise<string>{
     const filename = `${Date.now().toString()}-${name}`;
     console.log(filename);
     const bucket = storage.bucket(GCP_BUCKET_NAME)
@@ -35,7 +35,7 @@ class FileUploadService {
       gzip: true,
       metadata: {
         cacheControl: 'public, max-age=31536000',
-        contentType: 'image/jpeg',
+        contentType: mimetype,
       }
     };
 
@@ -46,10 +46,7 @@ class FileUploadService {
           console.log(err); // ignore for now
         })
         .on('finish', function () {
-          file.makePublic()
-            .then(() => {
-              resolve(getPublicUrl(filename));
-            })
+          resolve(getPublicUrl(filename));
         });
     }); 
   }
@@ -61,7 +58,7 @@ class FileUploadService {
         filename,
         mimetype,
         encoding,
-        url: await this.uploadToStorage(file, filename),
+        url: await this.uploadToStorage(file, filename, mimetype),
       } as IFile;
 
     }));
